@@ -16,11 +16,13 @@ function App() {
 
   const [selection, setSelection] = useState('Data');
   const [option, setOption] = useState(template);
+
+  const curOption = template;
   
   const updateOption = data => {
-    const optionCopy = cloneDeep(option);
-    merge(optionCopy, data);
-    setOption(optionCopy);
+    console.log('updateOption', data);
+    merge(curOption, data);
+    setOption(cloneDeep(curOption));
   }
 
   console.log('curOption', option);

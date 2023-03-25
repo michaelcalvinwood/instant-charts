@@ -34,14 +34,22 @@ function Data({option, updateOption}) {
                     const data = {
                         title: []
                     }
-                    data.title[option.info.curDiagram] = title;
+                    data.title[option.info.curDiagram] = {text: title};
                     updateOption(data);
                 }
 
-            //if (!has(option, 'option.title.text')) updateOption({title: { text: title}});
+            if (!(option.title && option.title.length && 
+                option.title[option.info.curDiagram] &&
+                option.title[option.info.curDiagram].subtext)) {
+                    const data = {
+                        title: []
+                    }
+                    data.title[option.info.curDiagram] = {subtext: subtitle};
+                    updateOption(data);
+                }
 
             
-            //if (!section.option.subtext) updateOption( {subtext: subtitle});
+           
 
         })
         .catch(error => {
