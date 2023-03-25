@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Data from './Components/Data';
 import { merge, cloneDeep } from 'lodash';
 
@@ -16,13 +16,13 @@ function App() {
 
   const [selection, setSelection] = useState('Data');
   const [option, setOption] = useState(template);
+  const optionRef = useRef(option);
 
   const curOption = template;
   
   const updateOption = data => {
-    console.log('updateOption', data);
-    merge(curOption, data);
-    setOption(cloneDeep(curOption));
+    optionRef.current = merge(optionRef.current, data);
+    setOption(cloneDeep(optionRef.current));
   }
 
   console.log('curOption', option);
