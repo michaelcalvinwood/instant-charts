@@ -1,30 +1,85 @@
 import './Data.scss';
 import React from 'react'
 import Dropzone from 'react-dropzone';
+import axios from 'axios';
+import { has } from 'lodash';
 
-function Data({section, updateOption, updateSection}) {
+function Data({option, updateOption}) {
     
     const capitalized = word => word.charAt(0).toUpperCase() + word.slice(1);
+
+    const uploadFiles = files => {
+        const fd = new FormData();
+        files.forEach(file =>fd.append('File[]',file));
+       
+        const request = {
+            url: `https://charts.pymnts.com:6300/csv`,
+            method: 'post',
+            data: fd,
+            headers: { 'Content-Type': 'multipart/form-data' }
+        }
+        axios(request)
+        .then((response) => {
+            console.log(response.data);
+            const csvData = response.data;
+            const fileName = files[0].name;
+            
+            const fileNameParts = fileName.substring(0, fileName.lastIndexOf('.') !== -1 ? fileName.lastIndexOf('.') : fileName.length).split('--');
+            let title = fileNameParts[0].trim();
+            const subtitle = fileNameParts.length > 1 ? fileNameParts[1].trim() : '';
+
+            if (!(option.title && option.title.length && 
+                option.title[option.info.curDiagram] &&
+                option.title[option.info.curDiagram].text)) {
+                    const data = {
+                        title: []
+                    }
+                    data.title[option.info.curDiagram] = title;
+                    updateOption(data);
+                }
+
+            //if (!has(option, 'option.title.text')) updateOption({title: { text: title}});
+
+            
+            //if (!section.option.subtext) updateOption( {subtext: subtitle});
+
+        })
+        .catch(error => {
+            console.error(error.message, error.code);
+            switch (error.code) {
+                case 'ERR_NETWORK':
+                    alert ("Error: Instant Charts server is down.\nPlease contact admin@pymnts.com.");
+                    break;
+                default:
+                    alert('Error: Could not process CSV. Please reformat file.');
+            }
+        })
+    }
 
   return (
     <div className='Data'>
         <h1 className='Data__heading'>Data</h1>
          <div className="Data__choices">
             <div className="Data__chart-type">
-                {!section.curChart && <h2 className="Data__instructions">Select Chart Type</h2>}
-                {section.curChart && <h2 className="Data__">{capitalized(section.curChart)} Chart</h2> }
+                {!option.info.curChart && <h2 className="Data__instructions">Select Chart Type</h2>}
+                {option.info.curChart && <h2 className="Data__">{capitalized(option.info.curChart)} Chart</h2> }
                     {/* <div className='file-upload--fileName'>{fileName}</div> */}
-                    {<select id="chartType" name = "chartType" className='file-upload--select' onChange={e => updateSection({curChart: e.target.value})} value={section.curChart ? section.curChart : ''}>
-                        <option value=''>---</option>
-                        <option value="bar">&nbsp;Bar</option>
-                        <option value="line">&nbsp;Line</option>
-                        <option value="pie">&nbsp;Pie</option>
-                        <option value="stack">&nbsp;Stack</option>
+                    {<select id="chartType" 
+                        name = "chartType" 
+                        className='file-upload--select' 
+                        onChange={e => updateOption({info: {curChart: e.target.value}})} 
+                        value={option.info.curChart ? option.info.curChart : ''}
+                     >
+                            <option value=''>---</option>
+                            <option value="bar">&nbsp;Bar</option>
+                            <option value="line">&nbsp;Line</option>
+                            <option value="pie">&nbsp;Pie</option>
+                            <option value="stack">&nbsp;Stack</option>
                     </select> 
                     }
-                    {<div className={section.curChart ? "dropzone-container" : "dropzone-container dropzone-container--hidden"}>
+                    {<div className={option.info.curChart ? "dropzone-container" : "dropzone-container dropzone-container--hidden"}>
                         <Dropzone 
-                            //onDrop={acceptedFiles => uploadFiles(acceptedFiles)}
+                            onDrop={acceptedFiles => uploadFiles(acceptedFiles)}
                         >
                                 {({getRootProps, getInputProps}) => (
                                     <section>

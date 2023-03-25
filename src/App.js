@@ -8,34 +8,27 @@ function App() {
   const selections = [
     'Data'
   ]
-  let section = {
-    option: {}
-    
+  let template = {
+    info: {
+      curDiagram: 0
+    }
   };
 
   const [selection, setSelection] = useState('Data');
-  const [sections, setSections] = useState([section]);
-  const [curSection, setCurSection] = useState(0);
-
-  const updateSection = data => {
-    const sectionsCopy = cloneDeep(sections);
-    merge(sectionsCopy[curSection], data);
-    console.log('merged sectionCopy', sectionsCopy[curSection]);
-    setSections(sectionsCopy);
-  }
-
+  const [option, setOption] = useState(template);
+  
   const updateOption = data => {
-    const sectionCopy = cloneDeep(sections[curSection]);
-    merge(sectionCopy.option, data);
-    setSections(sectionCopy);
+    const optionCopy = cloneDeep(option);
+    merge(optionCopy, data);
+    setOption(optionCopy);
   }
 
-  console.log('curSection', sections[curSection]);
+  console.log('curOption', option);
 
 
   return (
     <div className="App">
-      {selection === 'Data' && <Data section={sections[curSection]} updateOption={updateOption} updateSection={updateSection}/>}
+      {selection === 'Data' && <Data option={option} updateOption={updateOption} />}
     </div>
   );
 }
