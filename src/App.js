@@ -17,16 +17,14 @@ function App() {
   const [selection, setSelection] = useState('Data');
   const [option, setOption] = useState(template);
   const optionRef = useRef(option);
-
-  const curOption = template;
   
   const updateOption = data => {
+    console.log('updateOption', data);
     optionRef.current = merge(optionRef.current, data);
     setOption(cloneDeep(optionRef.current));
   }
 
   console.log('curOption', option);
-
 
   return (
     <div className="App">
