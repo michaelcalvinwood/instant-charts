@@ -8,38 +8,34 @@ function App() {
   const selections = [
     'Data'
   ]
-  let template = {
+  let section = {
+    option: {}
     
   };
 
   const [selection, setSelection] = useState('Data');
-  const [option, setOption] = useState(template);
+  const [sections, setSections] = useState([section]);
+  const [curSection, setCurSection] = useState(0);
 
-  const updateOption = data => {
-    console.log('data', data);
-    const optionCopy = cloneDeep(option);
-    merge(optionCopy, data);
-    console.log('optionCopy', optionCopy)
-    setOption(optionCopy);
+  const updateSection = data => {
+    const sectionsCopy = cloneDeep(sections);
+    merge(sectionsCopy[curSection], data);
+    console.log('merged sectionCopy', sectionsCopy[curSection]);
+    setSections(sectionsCopy);
   }
 
-  console.log('option', option);
-  option && option.info && option.info.changes();
+  const updateOption = data => {
+    const sectionCopy = cloneDeep(sections[curSection]);
+    merge(sectionCopy.option, data);
+    setSections(sectionCopy);
+  }
 
-  useEffect(() => {
-    updateOption({
-      info: {
-        chart: 'bar',
-        changes: () => console.log('stuff')
-      }
-    })
-  
-    
-  }, [])
+  console.log('curSection', sections[curSection]);
+
 
   return (
     <div className="App">
-      {selection === 'Data' && <Data />}
+      {selection === 'Data' && <Data section={sections[curSection]} updateOption={updateOption} updateSection={updateSection}/>}
     </div>
   );
 }
