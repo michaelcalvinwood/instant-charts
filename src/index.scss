@@ -1,11 +1,21 @@
+:root {
+  --primary-color: #3880ff;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-:root {
-  --primary-color: #3880ff;
+h1, h2, h3, h4, h5, h6 {
+  text-align: center;
+  color: var(--primary-color)
+}
+
+select {
+  margin: auto;
+  display: block;
 }
 
 body {
