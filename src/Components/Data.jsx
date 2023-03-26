@@ -20,7 +20,33 @@ import { cloneDeep } from 'lodash';
 function Data({option, updateOption}) {
     const [chartType, setChartType] = useState('');
     
+    
     const capitalized = word => word.charAt(0).toUpperCase() + word.slice(1);
+
+    const addTitle = (fileName, csv) => {
+        const name = csv[0][0] ? csv[0][0] : fileName;
+        const nameParts = name.substring(0, name.lastIndexOf('.') !== -1 ? name.lastIndexOf('.') : name.length).split('--');
+        let newTitle = {   
+                text: nameParts[0].trim(),
+                subtext: nameParts.length > 1 ? nameParts[1].trim() : '',
+                left: 'center',
+                textStyle: {
+                  fontSize: 16,
+                  lineHeight: 22,
+                  fontWeight: "bold",
+                  color: "#000000",
+                  height: 0
+                  },
+                  subtextStyle: {
+                      fontSize: 12,
+                      lineHeight: 16,
+                      color: "#000000",
+                  }
+        }
+        let curTitles = cloneDeep(option.title);
+        curTitles.push(newTitle);
+        updateOption({title: curTitles});
+    }
 
     const addPieSeries = csv => {
         const data = [];
@@ -53,8 +79,18 @@ function Data({option, updateOption}) {
                   return percentFlag ? `${value}%` : `${value}`;
                 }
             },
+            tooltip: {
+                formatter: (a, b, c, d) => {
+                    return `${a.name}:<br>${a.value}`
+                },
+                backgroundColor: "rgba(0, 0, 0, .6)",
+                textStyle: {
+                  color: 'white'
+                },
+                extraCssText: 'text-align:center'
+              }
         })
-            
+
         updateOption(newOption);
     }
 
@@ -75,6 +111,7 @@ function Data({option, updateOption}) {
         
         const fd = new FormData();
         console.log(files[0].name);
+        
         files.forEach(file =>fd.append('File[]',file));
         const config = {  };
 
@@ -88,6 +125,7 @@ function Data({option, updateOption}) {
         .then((response) => {
             const csv = response.data;
             console.log('csv', csv);
+            addTitle(files[0].name, csv);
 
             switch (chartType) {
                 case 'pie':

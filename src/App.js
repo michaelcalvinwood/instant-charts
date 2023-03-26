@@ -15,6 +15,7 @@ function App() {
       curSection: null,
       sections: [],
     },
+    tooltip: {},
     title: [],
     legend: [],
     grid: [],
