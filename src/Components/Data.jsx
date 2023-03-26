@@ -1,6 +1,6 @@
 import './Data.scss';
-import React from 'react'
-
+import React, { useState } from 'react'
+import Dropzone from 'react-dropzone';
 
 /*
  * use: https://react-papaparse.js.org/
@@ -17,8 +17,13 @@ import React from 'react'
  */
 
 function Data({option, updateOption}) {
+    const [chartType, setChartType] = useState('');
     
     const capitalized = word => word.charAt(0).toUpperCase() + word.slice(1);
+
+    const uploadFiles = files => {
+
+    }
 
     // const uploadFiles = files => {
     //     const fd = new FormData();
@@ -78,12 +83,12 @@ function Data({option, updateOption}) {
         <h1 className='Data__heading'>Data</h1>
          <div className="Data__sections">
             <div className="Data__section-left">
-                <h3>Chart Type</h3>
+                <h3 className='Data__chart-type-header'>Chart Type</h3>
                 <select id="chartType" 
                         name = "chartType" 
-                        className='file-upload--select' 
-                        onChange={e => updateOption({info: {curChart: e.target.value}})} 
-                        value={option.info.curChart ? option.info.curChart : ''}
+                        className='Data__select-chart-type' 
+                        onChange={e => setChartType(e.target.value)} 
+                        value={chartType}
                      >
                             <option value=''>---</option>
                             <option value="bar">&nbsp;Bar</option>
@@ -91,7 +96,22 @@ function Data({option, updateOption}) {
                             <option value="pie">&nbsp;Pie</option>
                             <option value="stack">&nbsp;Stack</option>
                     </select> 
-                    
+                { chartType && 
+                    <div className='dropzone-container'>
+
+                        <Dropzone 
+                            onDrop={acceptedFiles => uploadFiles(acceptedFiles)}>
+                                {({getRootProps, getInputProps}) => (
+                                    <section>
+                                    <div {...getRootProps()}>
+                                        <input {...getInputProps()} />
+                                        <p>Drag 'n' drop chart csv file here.<br /> Or click to select file</p>
+                                    </div>
+                                    </section>
+                                )}
+                        </Dropzone> 
+                    </div> 
+                }
             </div>
             <div className="Data__section-middle">Middle</div>
             <div className="Data__section-right">Right</div>

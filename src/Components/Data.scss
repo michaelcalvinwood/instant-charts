@@ -11,16 +11,16 @@
         width: 33vw;
         padding: 1rem;
         overflow-y: auto;
-        height: calc(25vh - 38px);
+        height: calc(25vh - 46px);
     }
     &__section-middle {
         border-left: 1px solid var(--primary-color);
         border-right: 1px solid var(--primary-color);
         
     }
-    &__choices {
-        display: flex;
-        justify-content: space-between;
+    &__select-chart-type {
+        width: 5rem;
+        margin-bottom: 1rem;
     }
     &__chart-type {
         width: 19.5%;
