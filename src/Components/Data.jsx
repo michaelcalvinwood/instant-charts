@@ -2,6 +2,7 @@ import './Data.scss';
 import React, { useState } from 'react'
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
+import { cloneDeep } from 'lodash';
 /*
  * use: https://react-papaparse.js.org/
  * Write our own csv to html table
@@ -21,6 +22,36 @@ function Data({option, updateOption}) {
     
     const capitalized = word => word.charAt(0).toUpperCase() + word.slice(1);
 
+    const addPieSeries = csv => {
+        const data = [];
+        for (let i = 1; i < csv[0].length; ++i) {
+            const name = csv[0][i];
+            const value = csv[1][i];
+            data.push({name, value});
+        }
+        const newOption = {};
+        newOption.series = cloneDeep(option.series);
+        newOption.series.push({
+            name: csv[1][0],
+            type: 'pie',
+            data
+        })
+            
+        updateOption(newOption);
+    }
+
+    const addBarSeries = csv => {
+        
+    }
+
+    const addLineSeries = csv => {
+        
+    }
+
+    const constructStack = csv => {
+        
+    }
+
     const uploadFiles = files => {
         console.log('files', files);
         
@@ -39,6 +70,18 @@ function Data({option, updateOption}) {
         .then((response) => {
             const csv = response.data;
             console.log('csv', csv);
+
+            switch (chartType) {
+                case 'pie':
+                    return addPieSeries(csv);
+                case 'bar':
+                    return addBarSeries(csv);
+                case 'line':
+                    return addBarSeries(csv);
+                case 'stack':
+                    return constructStack(csv);
+                
+            }
         })
         .catch(error => {
             console.error(error.message, error.code);

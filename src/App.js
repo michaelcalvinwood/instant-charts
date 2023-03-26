@@ -47,7 +47,7 @@ function App() {
     <div className="App">
       {selection === 'Data' && <Data option={option} updateOption={updateOption} />}
       <Sections />
-      <Chart />
+      <Chart option={option}/>
     </div>
   );
 }
