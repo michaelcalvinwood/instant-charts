@@ -22,10 +22,7 @@ function Chart({option}) {
     const chartDom = chartRef.current;
     const echarts = window.echarts;
     var myChart = echarts.init(chartDom);
-    myChart.setOption(option);
-    console.log('container dimensions', chartDom.clientWidth, chartDom.clientHeight);
-    if (option.title.length) console.log('title dimensions', getComponentDimensions(myChart, 'title'));
-
+    myChart.setOption(option);    
   }
 
   useEffect(() => {
