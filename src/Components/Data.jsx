@@ -91,6 +91,20 @@ function Data({option, updateOption}) {
                 extraCssText: 'text-align:center'
               }
         })
+        newOption.graphic = cloneDeep(option.graphic);
+        newOption.graphic.push({
+            
+            type: 'text',
+            style: {
+                id: 'source',
+                text: 'Source',
+                fontSize: 12,
+                lineHeight: 16
+            },
+            bottom: 0,
+            left: 0,
+            
+        })
 
         updateOption(newOption);
     }
@@ -174,7 +188,6 @@ function Data({option, updateOption}) {
                     </select> 
                 { chartType && 
                     <div className='dropzone-container'>
-
                         <Dropzone 
                             onDrop={acceptedFiles => uploadFiles(acceptedFiles)}>
                                 {({getRootProps, getInputProps}) => (
@@ -192,6 +205,7 @@ function Data({option, updateOption}) {
             <div className="Data__section-middle">Middle</div>
             <div className="Data__section-right">
                 <Input 
+                    label='Title:'
                     type='textarea'
                     placeholder={'title'}
                     option={option}
@@ -200,12 +214,12 @@ function Data({option, updateOption}) {
                     
                 />
                  <Input 
+                    label="Subtitle:"
                     type='textarea'
                     placeholder={'subtitle'}
                     option={option}
                     updateOption={updateOption}
                     optionPath='title[0].subtext'
-                    
                 />
             </div>
          </div>
