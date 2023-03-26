@@ -27,7 +27,7 @@ function Data({option, updateOption}) {
         for (let i = 1; i < csv[0].length; ++i) {
             const name = csv[0][i];
             const value = csv[1][i];
-            data.push({name, value});
+            data.push({name, value, percentFlag: false});
         }
         const newOption = {};
         newOption.series = cloneDeep(option.series);
@@ -40,6 +40,17 @@ function Data({option, updateOption}) {
                   shadowBlur: 10,
                   shadowOffsetX: 0,
                   shadowColor: "rgba(0, 0, 0, 0.5)"
+                }
+            },
+            label: {
+                show: true,
+                position: 'inside',
+                fontSize: 15,
+                color: '#000000',
+                formatter: (a) => {
+                  let percentFlag = a.data.percentFlag;
+                  let value = a.value;
+                  return percentFlag ? `${value}%` : `${value}`;
                 }
             },
         })
