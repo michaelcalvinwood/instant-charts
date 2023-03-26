@@ -78,19 +78,8 @@ function Data({option, updateOption}) {
         <h1 className='Data__heading'>Data</h1>
          <div className="Data__sections">
             <div className="Data__section-left">
-                Left 
-            </div>
-            <div className="Data__section-middle">Middle</div>
-            <div className="Data__section-right">Right</div>
-         </div>
-         
-         
-         {/* <div className="Data__choices">
-            <div className="Data__chart-type">
-                {!option.info.curChart && <h2 className="Data__instructions">Select Chart Type</h2>}
-                {option.info.curChart && <h2 className="Data__">{capitalized(option.info.curChart)} Chart</h2> }
-                    <div className='file-upload--fileName'>{fileName}</div>
-                    {<select id="chartType" 
+                <h3>Chart Type</h3>
+                <select id="chartType" 
                         name = "chartType" 
                         className='file-upload--select' 
                         onChange={e => updateOption({info: {curChart: e.target.value}})} 
@@ -102,7 +91,19 @@ function Data({option, updateOption}) {
                             <option value="pie">&nbsp;Pie</option>
                             <option value="stack">&nbsp;Stack</option>
                     </select> 
-                    }
+                    
+            </div>
+            <div className="Data__section-middle">Middle</div>
+            <div className="Data__section-right">Right</div>
+         </div>
+         
+         
+         {/* <div className="Data__choices">
+            <div className="Data__chart-type">
+                {!option.info.curChart && <h2 className="Data__instructions">Select Chart Type</h2>}
+                {option.info.curChart && <h2 className="Data__">{capitalized(option.info.curChart)} Chart</h2> }
+                    <div className='file-upload--fileName'>{fileName}</div>
+                   
        
                 </div>
                 <div>PapaParse</div>
