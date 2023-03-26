@@ -4,10 +4,14 @@ import React, { useEffect, useRef } from 'react';
 function Chart({option}) {
   const chartRef = useRef();
 
-  const chartDom = chartRef.current;
-  const echarts = window.echarts;
-  var myChart = echarts.init(chartDom);
-  myChart.setOption(option);
+  
+
+  useEffect(() => {
+    const chartDom = chartRef.current;
+    const echarts = window.echarts;
+    var myChart = echarts.init(chartDom);
+    myChart.setOption(option);
+  })
 
   return (
     <div className='chart'>

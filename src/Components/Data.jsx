@@ -34,7 +34,14 @@ function Data({option, updateOption}) {
         newOption.series.push({
             name: csv[1][0],
             type: 'pie',
-            data
+            data,
+            emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: "rgba(0, 0, 0, 0.5)"
+                }
+            },
         })
             
         updateOption(newOption);
