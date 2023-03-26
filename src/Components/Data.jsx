@@ -91,21 +91,7 @@ function Data({option, updateOption}) {
                 extraCssText: 'text-align:center'
               }
         })
-        newOption.graphic = cloneDeep(option.graphic);
-        newOption.graphic.push({
-            
-            type: 'text',
-            style: {
-                id: 'source',
-                text: 'Source',
-                fontSize: 12,
-                lineHeight: 16
-            },
-            bottom: 0,
-            left: 0,
-            
-        })
-
+       
         updateOption(newOption);
     }
 
@@ -148,7 +134,7 @@ function Data({option, updateOption}) {
                 case 'bar':
                     return addBarSeries(csv);
                 case 'line':
-                    return addBarSeries(csv);
+                    return addLineSeries(csv);
                 case 'stack':
                     return constructStack(csv);
                 
@@ -207,7 +193,7 @@ function Data({option, updateOption}) {
                 <Input 
                     label='Title:'
                     type='textarea'
-                    placeholder={'title'}
+                    
                     option={option}
                     updateOption={updateOption}
                     optionPath='title[0].text'
@@ -216,10 +202,17 @@ function Data({option, updateOption}) {
                  <Input 
                     label="Subtitle:"
                     type='textarea'
-                    placeholder={'subtitle'}
+                    
                     option={option}
                     updateOption={updateOption}
                     optionPath='title[0].subtext'
+                />
+                <Input
+                    label="Source:"
+                    type='textarea'
+                    option={option}
+                    updateOption={updateOption}
+                    optionPath='graphic[0].style.text'
                 />
             </div>
          </div>

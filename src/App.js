@@ -35,9 +35,11 @@ function App() {
     series: [],
     toolbox: {
       feature: {
+        
         dataView: {
           readOnly: true,
-        }
+        },
+        saveAsImage: {},
       }
     }
   };
