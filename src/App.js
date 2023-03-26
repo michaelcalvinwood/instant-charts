@@ -12,7 +12,22 @@ function App() {
   ]
   let template = {
     info: {
-      curDiagram: 0
+      curSection: null,
+      sections: [],
+    },
+    title: [],
+    legend: [],
+    grid: [],
+    xAxis: [],
+    yAxis: [],
+    graphic: [],
+    series: [],
+    toolbox: {
+      feature: {
+        dataView: {
+          readOnly: true,
+        }
+      }
     }
   };
 
