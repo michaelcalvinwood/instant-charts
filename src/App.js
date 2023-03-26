@@ -21,7 +21,17 @@ function App() {
     grid: [],
     xAxis: [],
     yAxis: [],
-    graphic: [],
+    graphic: [{
+      id: 'source',
+      type: 'text',
+      bottom: 0,
+      left: 0,
+      style: {
+        text: 'Source:',
+        fontSize: 12,
+        lineHeight: 16
+      }
+    }],
     series: [],
     toolbox: {
       feature: {
