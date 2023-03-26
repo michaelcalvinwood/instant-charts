@@ -1,0 +1,12 @@
+.sections {
+    height: 75vh;
+    position: fixed;
+    top: 25vh;
+    left: 0;
+    width: 25vw;
+    border-right: 1px solid var(--primary-color);
+
+    &__heading {
+        margin-top: .5rem;
+    }
+}

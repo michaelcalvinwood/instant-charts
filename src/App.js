@@ -3,6 +3,7 @@ import './App.scss';
 import { useEffect, useRef, useState } from 'react';
 import Data from './Components/Data';
 import { merge, cloneDeep } from 'lodash';
+import Sections from './Components/Sections';
 
 function App() {
   const selections = [
@@ -29,6 +30,7 @@ function App() {
   return (
     <div className="App">
       {selection === 'Data' && <Data option={option} updateOption={updateOption} />}
+      <Sections />
     </div>
   );
 }
