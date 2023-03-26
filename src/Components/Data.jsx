@@ -192,11 +192,20 @@ function Data({option, updateOption}) {
             <div className="Data__section-middle">Middle</div>
             <div className="Data__section-right">
                 <Input 
-                    type='text'
+                    type='textarea'
                     placeholder={'title'}
                     option={option}
                     updateOption={updateOption}
                     optionPath='title[0].text'
+                    
+                />
+                 <Input 
+                    type='textarea'
+                    placeholder={'subtitle'}
+                    option={option}
+                    updateOption={updateOption}
+                    optionPath='title[0].subtext'
+                    
                 />
             </div>
          </div>

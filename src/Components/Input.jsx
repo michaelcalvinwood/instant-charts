@@ -2,12 +2,13 @@ import './Input.scss';
 import React from 'react';
 import { get, set, cloneDeep, clone } from 'lodash';
 
-function Input({type, option, optionPath, updateOption, placeholder}) {
-
+function Input({type, option, optionPath, updateOption, placeholder, width}) {
+   
     switch (type) {
         case 'text':
             return (
                 <input 
+                    className='input__text'
                     type='text'
                     placeholder={placeholder ? placeholder : ''} 
                     value={get(option, optionPath, '')}
@@ -22,6 +23,7 @@ function Input({type, option, optionPath, updateOption, placeholder}) {
         case 'textarea': 
         return (
             <textarea 
+                className="input__textarea"
                 placeholder={placeholder ? placeholder : ''} 
                 value={get(option, optionPath, '')}
                 onChange={(e) => {
@@ -29,6 +31,9 @@ function Input({type, option, optionPath, updateOption, placeholder}) {
                     const curOption = cloneDeep(option);
                     set(curOption, optionPath, newValue);
                     updateOption(curOption);
+                }}
+                style={{
+                    width: width ? width : '100%'
                 }}
             />
           )
