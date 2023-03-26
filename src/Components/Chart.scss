@@ -1,0 +1,11 @@
+.chart {
+    height: 75vh;
+    position: fixed;
+    top: 25vh;
+    left: 25vw;
+    width: 75vw;
+
+    &__heading {
+        margin-top: .5rem;
+    }
+}

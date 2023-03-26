@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Data from './Components/Data';
 import { merge, cloneDeep } from 'lodash';
 import Sections from './Components/Sections';
+import Chart from './Components/Chart';
 
 function App() {
   const selections = [
@@ -31,6 +32,7 @@ function App() {
     <div className="App">
       {selection === 'Data' && <Data option={option} updateOption={updateOption} />}
       <Sections />
+      <Chart />
     </div>
   );
 }
