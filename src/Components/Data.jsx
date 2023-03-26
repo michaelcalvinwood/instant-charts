@@ -1,7 +1,7 @@
 import './Data.scss';
 import React, { useState } from 'react'
 import Dropzone from 'react-dropzone';
-
+import axios from 'axios';
 /*
  * use: https://react-papaparse.js.org/
  * Write our own csv to html table
@@ -22,61 +22,37 @@ function Data({option, updateOption}) {
     const capitalized = word => word.charAt(0).toUpperCase() + word.slice(1);
 
     const uploadFiles = files => {
+        console.log('files', files);
+        
+        const fd = new FormData();
+        console.log(files[0].name);
+        files.forEach(file =>fd.append('File[]',file));
+        const config = {  };
 
+        const request = {
+            url: `https://charts.pymnts.com:6300/csv`,
+            method: 'post',
+            data: fd,
+            headers: { 'Content-Type': 'multipart/form-data' }
+        }
+        axios(request)
+        .then((response) => {
+            const csv = response.data;
+            console.log('csv', csv);
+        })
+        .catch(error => {
+            console.error(error.message, error.code);
+            switch (error.code) {
+                case 'ERR_NETWORK':
+                    alert ("Error: Instant Charts server is down.\nPlease contact admin@pymnts.com.");
+                    break;
+                default:
+                    alert('Error: Could not process CSV. Please reformat file.');
+            }
+            
+        })
     }
 
-    // const uploadFiles = files => {
-    //     const fd = new FormData();
-    //     files.forEach(file =>fd.append('File[]',file));
-       
-    //     const request = {
-    //         url: `https://charts.pymnts.com:6300/csv`,
-    //         method: 'post',
-    //         data: fd,
-    //         headers: { 'Content-Type': 'multipart/form-data' }
-    //     }
-    //     axios(request)
-    //     .then((response) => {
-    //         console.log(response.data);
-    //         const csv = response.data;
-    //         updateOption({info: {curCsv: csv}})
-    //         const fileName = csv[0][0] ? csv[0][0] : files[0].name;
-           
-    //         const fileNameParts = fileName.substring(0, fileName.lastIndexOf('.') !== -1 ? fileName.lastIndexOf('.') : fileName.length).split('--');
-    //         const title = fileNameParts[0].trim();
-    //         const subtitle = fileNameParts.length > 1 ? fileNameParts[1].trim() : '';
-            
-    //         if (!(option.title && option.title.length && 
-    //             option.title[option.info.curDiagram] &&
-    //             option.title[option.info.curDiagram].text)) {
-    //                 const data = {
-    //                     title: []
-    //                 }
-    //                 data.title[option.info.curDiagram] = {text: title};
-    //                 updateOption(data);
-    //             }
-
-    //         if (!(option.title && option.title.length && 
-    //             option.title[option.info.curDiagram] &&
-    //             option.title[option.info.curDiagram].subtext)) {
-    //                 const data = {
-    //                     title: []
-    //                 }
-    //                 data.title[option.info.curDiagram] = {subtext: subtitle};
-    //                 updateOption(data);
-    //             }
-    //     })
-    //     .catch(error => {
-    //         console.error(error.message, error.code);
-    //         switch (error.code) {
-    //             case 'ERR_NETWORK':
-    //                 alert ("Error: Instant Charts server is down.\nPlease contact admin@pymnts.com.");
-    //                 break;
-    //             default:
-    //                 alert('Error: Could not process CSV. Please reformat file.');
-    //         }
-    //     })
-    // }
 
   return (
     <div className='Data'>
