@@ -1,77 +1,95 @@
 import './Data.scss';
 import React from 'react'
-import Dropzone from 'react-dropzone';
-import axios from 'axios';
-import { has } from 'lodash';
+
+
+/*
+ * use: https://react-papaparse.js.org/
+ * Write our own csv to html table
+ * <tr>
+ *  <th></th> [0][0]
+ *  <th></th> [1][0]
+ * </tr>
+ * <tr>
+ *  <td></td>[0][1]
+ *  <td></td>[1][1]
+ * </tr>
+ * 
+ */
 
 function Data({option, updateOption}) {
     
     const capitalized = word => word.charAt(0).toUpperCase() + word.slice(1);
 
-    const uploadFiles = files => {
-        const fd = new FormData();
-        files.forEach(file =>fd.append('File[]',file));
+    // const uploadFiles = files => {
+    //     const fd = new FormData();
+    //     files.forEach(file =>fd.append('File[]',file));
        
-        const request = {
-            url: `https://charts.pymnts.com:6300/csv`,
-            method: 'post',
-            data: fd,
-            headers: { 'Content-Type': 'multipart/form-data' }
-        }
-        axios(request)
-        .then((response) => {
-            console.log(response.data);
-            const csvData = response.data;
-            const fileName = files[0].name;
-            
-            const fileNameParts = fileName.substring(0, fileName.lastIndexOf('.') !== -1 ? fileName.lastIndexOf('.') : fileName.length).split('--');
-            let title = fileNameParts[0].trim();
-            const subtitle = fileNameParts.length > 1 ? fileNameParts[1].trim() : '';
-
-            if (!(option.title && option.title.length && 
-                option.title[option.info.curDiagram] &&
-                option.title[option.info.curDiagram].text)) {
-                    const data = {
-                        title: []
-                    }
-                    data.title[option.info.curDiagram] = {text: title};
-                    updateOption(data);
-                }
-
-            if (!(option.title && option.title.length && 
-                option.title[option.info.curDiagram] &&
-                option.title[option.info.curDiagram].subtext)) {
-                    const data = {
-                        title: []
-                    }
-                    data.title[option.info.curDiagram] = {subtext: subtitle};
-                    updateOption(data);
-                }
-
-            
+    //     const request = {
+    //         url: `https://charts.pymnts.com:6300/csv`,
+    //         method: 'post',
+    //         data: fd,
+    //         headers: { 'Content-Type': 'multipart/form-data' }
+    //     }
+    //     axios(request)
+    //     .then((response) => {
+    //         console.log(response.data);
+    //         const csv = response.data;
+    //         updateOption({info: {curCsv: csv}})
+    //         const fileName = csv[0][0] ? csv[0][0] : files[0].name;
            
+    //         const fileNameParts = fileName.substring(0, fileName.lastIndexOf('.') !== -1 ? fileName.lastIndexOf('.') : fileName.length).split('--');
+    //         const title = fileNameParts[0].trim();
+    //         const subtitle = fileNameParts.length > 1 ? fileNameParts[1].trim() : '';
+            
+    //         if (!(option.title && option.title.length && 
+    //             option.title[option.info.curDiagram] &&
+    //             option.title[option.info.curDiagram].text)) {
+    //                 const data = {
+    //                     title: []
+    //                 }
+    //                 data.title[option.info.curDiagram] = {text: title};
+    //                 updateOption(data);
+    //             }
 
-        })
-        .catch(error => {
-            console.error(error.message, error.code);
-            switch (error.code) {
-                case 'ERR_NETWORK':
-                    alert ("Error: Instant Charts server is down.\nPlease contact admin@pymnts.com.");
-                    break;
-                default:
-                    alert('Error: Could not process CSV. Please reformat file.');
-            }
-        })
-    }
+    //         if (!(option.title && option.title.length && 
+    //             option.title[option.info.curDiagram] &&
+    //             option.title[option.info.curDiagram].subtext)) {
+    //                 const data = {
+    //                     title: []
+    //                 }
+    //                 data.title[option.info.curDiagram] = {subtext: subtitle};
+    //                 updateOption(data);
+    //             }
+    //     })
+    //     .catch(error => {
+    //         console.error(error.message, error.code);
+    //         switch (error.code) {
+    //             case 'ERR_NETWORK':
+    //                 alert ("Error: Instant Charts server is down.\nPlease contact admin@pymnts.com.");
+    //                 break;
+    //             default:
+    //                 alert('Error: Could not process CSV. Please reformat file.');
+    //         }
+    //     })
+    // }
 
   return (
     <div className='Data'>
         <h1 className='Data__heading'>Data</h1>
-         <div className="Data__choices">
+         <div className="Data__sections">
+            <div className="Data__section-left">
+                Left 
+            </div>
+            <div className="Data__section-middle">Middle</div>
+            <div className="Data__section-right">Right</div>
+         </div>
+         
+         
+         {/* <div className="Data__choices">
             <div className="Data__chart-type">
                 {!option.info.curChart && <h2 className="Data__instructions">Select Chart Type</h2>}
                 {option.info.curChart && <h2 className="Data__">{capitalized(option.info.curChart)} Chart</h2> }
-                    {/* <div className='file-upload--fileName'>{fileName}</div> */}
+                    <div className='file-upload--fileName'>{fileName}</div>
                     {<select id="chartType" 
                         name = "chartType" 
                         className='file-upload--select' 
@@ -85,24 +103,10 @@ function Data({option, updateOption}) {
                             <option value="stack">&nbsp;Stack</option>
                     </select> 
                     }
-                    {<div className={option.info.curChart ? "dropzone-container" : "dropzone-container dropzone-container--hidden"}>
-                        <Dropzone 
-                            onDrop={acceptedFiles => uploadFiles(acceptedFiles)}
-                        >
-                                {({getRootProps, getInputProps}) => (
-                                    <section>
-                                    <div {...getRootProps()}>
-                                        <input {...getInputProps()} />
-                                        <p>Drag 'n' drop chart csv file here.<br /> Or click to select file</p>
-                                    </div>
-                                    </section>
-                                )}
-                        </Dropzone>
-                    </div>}
+       
                 </div>
-                <h2 className="Data__csv">CSV</h2>   
-               
-         </div>
+                <div>PapaParse</div>
+         </div> */}
         
            {/* {!embedCode && <div ref={metaAreaRef} className="file-upload__chartMetaContainer">
                 <h3 className='file-upload__metaDataLabel'>Meta Data</h3>

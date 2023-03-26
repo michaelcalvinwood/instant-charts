@@ -3,6 +3,21 @@
     height: 25vh;
     border-bottom: 1px solid var(--primary-color);
 
+    &__sections {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__section-left, &__section-middle, &__section-right {
+        width: 33vw;
+        padding: 1rem;
+        overflow-y: auto;
+        height: calc(25vh - 38px);
+    }
+    &__section-middle {
+        border-left: 1px solid var(--primary-color);
+        border-right: 1px solid var(--primary-color);
+        
+    }
     &__choices {
         display: flex;
         justify-content: space-between;
