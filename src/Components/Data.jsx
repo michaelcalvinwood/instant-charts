@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
 import { cloneDeep } from 'lodash';
+import Input from './Input';
 /*
  * use: https://react-papaparse.js.org/
  * Write our own csv to html table
@@ -189,7 +190,15 @@ function Data({option, updateOption}) {
                 }
             </div>
             <div className="Data__section-middle">Middle</div>
-            <div className="Data__section-right">Right</div>
+            <div className="Data__section-right">
+                <Input 
+                    type='text'
+                    placeholder={'title'}
+                    option={option}
+                    updateOption={updateOption}
+                    optionPath='title[0].text'
+                />
+            </div>
          </div>
          
          
