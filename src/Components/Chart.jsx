@@ -1,8 +1,9 @@
 import './Chart.scss';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { cloneDeep } from 'lodash';
 
 function Chart({option, updateOption}) {
+  const debugCount = useRef(0);
   const chartRef = useRef();
 
   function getSeriesInfo(chart) {
@@ -31,6 +32,8 @@ function Chart({option, updateOption}) {
     return titleHeight + subtitleHeight;
   }
 
+  const maxRadius = (cWidth, cHeight) => cWidth < cHeight ? cWidth / 2 : cHeight / 2;
+
   const displayChart = () => {
     /*
      * Adjust legend placement based on title height
@@ -45,7 +48,15 @@ function Chart({option, updateOption}) {
 
     if (option.series.length) {
       if (option.series[0].type === 'pie') {
-
+        const newOption = {};
+        newOption.series = cloneDeep(option.series);
+        const { center, setCenter} = newOption.series[0];
+        if (center[1] !== setCenter[1] + titleHeight) {
+          console.log('Updating Pie center');
+          center[1] = setCenter[1]  + titleHeight;
+          newOption.series[0].center = center;
+          updateOption(newOption);
+        };
       }
     }
 
@@ -56,6 +67,9 @@ function Chart({option, updateOption}) {
   }
 
   useEffect(() => {
+    ++debugCount.current;
+    if (debugCount.current > 10) return;
+
     const width = chartRef.current.clientWidth;
     const height = chartRef.current.clientHeight;
     const { containerWidth, containerHeight} = option.info;

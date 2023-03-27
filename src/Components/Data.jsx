@@ -55,16 +55,19 @@ function Data({option, updateOption}) {
         return Number(val)
     }
 
+    const maxRadius = () => {
+        const { containerWidth, containerHeight } = option.info;
+        const maxRadius = containerWidth < containerHeight ? containerWidth / 2 : containerHeight / 2;
+        return maxRadius;
+    }
+
     const addPieSeries = csv => {
         /*
          * Calculate pie placement
          */
         const { containerWidth, containerHeight } = option.info;
-
         const center = [.5 * containerWidth, .5 * containerHeight];
-        const maxRadius = containerWidth < containerHeight ? containerWidth / 2 : containerHeight / 2;
-        const radius = maxRadius * .9;
-
+        const radius = maxRadius() * .9;
 
         /*
          * add series
@@ -82,7 +85,7 @@ function Data({option, updateOption}) {
         newOption.series.push({
             name: csv[1][0],
             type: 'pie',
-            center, radius,
+            center, radius, setCenter: center,
             data,
             emphasis: {
                 itemStyle: {
@@ -122,6 +125,7 @@ function Data({option, updateOption}) {
             newOption.legend.push({data: legendData, top: 0});
         }
        
+        //console.log('newOption',newOption);
         updateOption(newOption);
     }
 
