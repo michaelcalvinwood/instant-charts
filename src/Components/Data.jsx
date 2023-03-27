@@ -102,8 +102,11 @@ function Data({option, updateOption}) {
     const addLineSeries = csv => {
         
         const newOption = {};
+
+        /*
+         * Configure series
+         */
         newOption.series = cloneDeep(option.series);
-    
         for (let i = 1; i < csv.length; ++i) {
           const name = csv[i][0];
           const data = [];
@@ -112,9 +115,24 @@ function Data({option, updateOption}) {
             let value = csv[i][j];
             data.push(value);
           }
-          newOption.series.push({name, data, type: 'line', xAxisIndex: 0, yAxisIndex: 0});
+          newOption.series.push({
+            name, 
+            data, 
+            type: 'line', 
+            xAxisIndex: 0, yAxisIndex: 0});
         }
 
+        newOption.tooltip = {
+            trigger: 'axis',
+            backgroundColor: "rgba(0, 0, 0, .6)",
+            textStyle: {
+              color: 'white'
+            },
+        }
+
+        /*
+         * Configure xAxis
+         */
         const xAxis = {
             type: 'category',
             data: [],
@@ -123,15 +141,19 @@ function Data({option, updateOption}) {
         for (let i = 1; i < csv[0].length; ++i) xAxis.data.push(csv[0][i]);
         newOption.xAxis = cloneDeep(option.xAxis);
         newOption.xAxis.push(xAxis);
-        //newOption.xAxis = xAxis;
-
+       
+        /*
+         * Configure yAxis
+         */
         newOption.yAxis = cloneDeep(option.yAxis);
         newOption.yAxis.push({
             type: 'value',
   
         })
-        //newOption.yAxis = {type: 'value'}
-
+       
+        /*
+         * Configure grid
+         */
         newOption.grid = cloneDeep(option.grid);
         newOption.grid.push({});
     
