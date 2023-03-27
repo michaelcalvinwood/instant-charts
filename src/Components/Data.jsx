@@ -55,9 +55,12 @@ function Data({option, updateOption}) {
     }
 
     const addPieSeries = csv => {
+        const legendData = [];
+
         const data = [];
         for (let i = 1; i < csv[0].length; ++i) {
             const name = csv[0][i];
+            if (name) legendData.push(name);
             const value = csv[1][i];
             data.push({name, value, percentFlag: false});
         }
@@ -96,13 +99,20 @@ function Data({option, updateOption}) {
                 extraCssText: 'text-align:center'
               }
         })
+
+        /*
+         * Configure legend
+         */
+        if (legendData.length) {
+            newOption.legend = cloneDeep(option.legend);
+            newOption.legend.push({data: legendData});
+        }
        
         updateOption(newOption);
     }
 
     const addBarSeries = csv => {
         const legendData = [];
-
         const newOption = {};
 
         /*
