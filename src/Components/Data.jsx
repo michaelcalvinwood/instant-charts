@@ -21,7 +21,6 @@ import Input from './Input';
 function Data({option, updateOption}) {
     const [chartType, setChartType] = useState('');
     
-    
     const capitalized = word => word.charAt(0).toUpperCase() + word.slice(1);
 
     const addTitle = (fileName, csv) => {
@@ -47,6 +46,12 @@ function Data({option, updateOption}) {
         let curTitles = cloneDeep(option.title);
         curTitles.push(newTitle);
         updateOption({title: curTitles});
+    }
+
+    const convertValue = val => {
+        val = val.replaceAll('%', '');
+
+        return Number(val)
     }
 
     const addPieSeries = csv => {
@@ -96,6 +101,76 @@ function Data({option, updateOption}) {
     }
 
     const addBarSeries = csv => {
+        const newOption = {};
+
+        /*
+         * Configure series
+         */
+        newOption.series = cloneDeep(option.series);
+        for (let i = 1; i < csv.length; ++i) {
+          const name = csv[i][0];
+          console.log('bar name', name);
+          const data = [];
+          for (let j = 1; j < csv[i].length; ++ j) {
+            if (!csv[i][j]) continue;
+            let value = convertValue(csv[i][j]);
+            data.push(value);
+          }
+          newOption.series.push({
+            name,
+            data, 
+            type: 'bar', 
+            xAxisIndex: 0, 
+            yAxisIndex: 0,
+            showBackground: true,
+            backgroundStyle: {
+                color: 'rgba(180, 180, 180, 0.2)'
+            }
+          });
+        }
+
+        /*
+         * Configure xAxis
+         */
+        const xAxis = {
+            type: 'category',
+            data: [],
+            
+        }
+        for (let i = 1; i < csv[0].length; ++i) {
+            if (csv[0][i]) xAxis.data.push(csv[0][i])
+        };
+        newOption.xAxis = cloneDeep(option.xAxis);
+        newOption.xAxis.push(xAxis);
+       
+        /*
+         * Configure yAxis
+         */
+        newOption.yAxis = cloneDeep(option.yAxis);
+        newOption.yAxis.push({
+            type: 'value',
+  
+        })
+       
+        /*
+         * Configure grid
+         */
+        newOption.grid = cloneDeep(option.grid);
+        newOption.grid.push({});
+
+        /*
+         * Configure tooltip
+         */
+        newOption.tooltip = {
+            trigger: "item",
+            formatter: "<div style='text-align:center'>{b}<br>{a}<br>{c}</div>",
+            backgroundColor: "rgba(0, 0, 0, .8)",
+            textStyle: {
+                color: 'white'
+            }
+        }
+        
+        updateOption(newOption);
         
     }
 
@@ -119,15 +194,9 @@ function Data({option, updateOption}) {
             name, 
             data, 
             type: 'line', 
-            xAxisIndex: 0, yAxisIndex: 0});
-        }
-
-        newOption.tooltip = {
-            trigger: 'axis',
-            backgroundColor: "rgba(0, 0, 0, .6)",
-            textStyle: {
-              color: 'white'
-            },
+            xAxisIndex: 0, 
+            yAxisIndex: 0
+          });
         }
 
         /*
@@ -156,7 +225,18 @@ function Data({option, updateOption}) {
          */
         newOption.grid = cloneDeep(option.grid);
         newOption.grid.push({});
-    
+
+        /*
+         * Configure tooltip
+         */
+        newOption.tooltip = {
+            trigger: 'axis',
+            backgroundColor: "rgba(0, 0, 0, .6)",
+            textStyle: {
+              color: 'white'
+            },
+        }
+        
         updateOption(newOption);
     }
 
