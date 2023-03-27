@@ -35,6 +35,11 @@ function Chart({option, updateOption}) {
   const maxRadius = (cWidth, cHeight) => cWidth < cHeight ? cWidth / 2 : cHeight / 2;
 
   const displayChart = () => {
+    const chartDom = chartRef.current;
+    const echarts = window.echarts;
+    var myChart = echarts.init(chartDom);
+    myChart.setOption(option);    
+
     /*
      * Adjust legend placement based on title height
      */
@@ -46,24 +51,27 @@ function Chart({option, updateOption}) {
       updateOption(newOption);
     };
 
+    const legendDimensions = getComponentDimensions(myChart, 'legend', 0);
+    console.log('legendHeight', legendDimensions);
+
+    /*
+     * Adjust chart placement based on title height and legend height
+     */
+
     if (option.series.length) {
       if (option.series[0].type === 'pie') {
         const newOption = {};
         newOption.series = cloneDeep(option.series);
         const { center, setCenter} = newOption.series[0];
-        if (center[1] !== setCenter[1] + titleHeight) {
+        if (center[1] !== setCenter[1] + titleHeight + legendDimensions.height) {
           console.log('Updating Pie center');
-          center[1] = setCenter[1]  + titleHeight;
+          center[1] = setCenter[1]  + titleHeight + legendDimensions.height;
           newOption.series[0].center = center;
           updateOption(newOption);
         };
       }
     }
 
-    const chartDom = chartRef.current;
-    const echarts = window.echarts;
-    var myChart = echarts.init(chartDom);
-    myChart.setOption(option);    
   }
 
   useEffect(() => {
