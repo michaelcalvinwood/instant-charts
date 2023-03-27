@@ -41,7 +41,8 @@ function Data({option, updateOption}) {
                       fontSize: 12,
                       lineHeight: 16,
                       color: "#000000",
-                  }
+                  },
+                padding: 5,
         }
         let curTitles = cloneDeep(option.title);
         curTitles.push(newTitle);
