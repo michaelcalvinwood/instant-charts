@@ -125,6 +125,14 @@ function Data({option, updateOption}) {
             showBackground: true,
             backgroundStyle: {
                 color: 'rgba(180, 180, 180, 0.2)'
+            },
+            tooltip: {
+                
+                formatter: "<div style='text-align:center'>{b}<br>{a}<br>{c}</div>",
+                backgroundColor: "rgba(0, 0, 0, .8)",
+                textStyle: {
+                color: 'white'
+                }
             }
           });
         }
@@ -158,17 +166,7 @@ function Data({option, updateOption}) {
         newOption.grid = cloneDeep(option.grid);
         newOption.grid.push({});
 
-        /*
-         * Configure tooltip
-         */
-        newOption.tooltip = {
-            trigger: "item",
-            formatter: "<div style='text-align:center'>{b}<br>{a}<br>{c}</div>",
-            backgroundColor: "rgba(0, 0, 0, .8)",
-            textStyle: {
-                color: 'white'
-            }
-        }
+       
         
         updateOption(newOption);
         
