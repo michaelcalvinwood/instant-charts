@@ -146,7 +146,6 @@ function Data({option, updateOption}) {
         const xAxis = {
             type: 'category',
             data: [],
-            
         }
         for (let i = 1; i < csv[0].length; ++i) {
             if (csv[0][i]) xAxis.data.push(csv[0][i])
@@ -184,6 +183,7 @@ function Data({option, updateOption}) {
     const addLineSeries = csv => {
         
         const newOption = {};
+        const legendData = [];
 
         /*
          * Configure series
@@ -191,6 +191,7 @@ function Data({option, updateOption}) {
         newOption.series = cloneDeep(option.series);
         for (let i = 1; i < csv.length; ++i) {
           const name = csv[i][0];
+          if (name) legendData.push(name);
           const data = [];
           for (let j = 1; j < csv[i].length; ++ j) {
             if (csv[i][j] === '') continue;
@@ -242,6 +243,14 @@ function Data({option, updateOption}) {
             textStyle: {
               color: 'white'
             },
+        }
+
+        /*
+         * Configure legend
+         */
+        if (legendData.length) {
+            newOption.legend = cloneDeep(option.legend);
+            newOption.legend.push({data: legendData});
         }
         
         updateOption(newOption);
