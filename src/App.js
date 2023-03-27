@@ -37,7 +37,7 @@ function App() {
       feature: {
         
         dataView: {
-          readOnly: true,
+          readOnly: false,
         },
         saveAsImage: {},
       }

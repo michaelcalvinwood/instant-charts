@@ -101,6 +101,41 @@ function Data({option, updateOption}) {
 
     const addLineSeries = csv => {
         
+        const newOption = {};
+        newOption.series = cloneDeep(option.series);
+    
+        for (let i = 1; i < csv.length; ++i) {
+          const name = csv[i][0];
+          const data = [];
+          for (let j = 1; j < csv[i].length; ++ j) {
+            if (csv[i][j] === '') continue;
+            let value = csv[i][j];
+            data.push(value);
+          }
+          newOption.series.push({name, data, type: 'line', xAxisIndex: 0, yAxisIndex: 0});
+        }
+
+        const xAxis = {
+            type: 'category',
+            data: [],
+            
+        }
+        for (let i = 1; i < csv[0].length; ++i) xAxis.data.push(csv[0][i]);
+        newOption.xAxis = cloneDeep(option.xAxis);
+        newOption.xAxis.push(xAxis);
+        //newOption.xAxis = xAxis;
+
+        newOption.yAxis = cloneDeep(option.yAxis);
+        newOption.yAxis.push({
+            type: 'value',
+  
+        })
+        //newOption.yAxis = {type: 'value'}
+
+        newOption.grid = cloneDeep(option.grid);
+        newOption.grid.push({});
+    
+        updateOption(newOption);
     }
 
     const constructStack = csv => {
@@ -111,7 +146,7 @@ function Data({option, updateOption}) {
         console.log('files', files);
         
         const fd = new FormData();
-        console.log(files[0].name);
+        //console.log(files[0].name);
         
         files.forEach(file =>fd.append('File[]',file));
         const config = {  };
@@ -159,7 +194,7 @@ function Data({option, updateOption}) {
         <h1 className='Data__heading'>Data</h1>
          <div className="Data__sections">
             <div className="Data__section-left">
-                <h3 className='Data__chart-type-header'>Chart Type</h3>
+                { !chartType && <h3 className='Data__chart-type-header'>Chart Type</h3> }
                 <select id="chartType" 
                         name = "chartType" 
                         className='Data__select-chart-type' 
@@ -190,7 +225,8 @@ function Data({option, updateOption}) {
             </div>
             <div className="Data__section-middle">Middle</div>
             <div className="Data__section-right">
-                <Input 
+                { option.series.length !== 0 && <div>
+                    <Input 
                     label='Title:'
                     type='textarea'
                     
@@ -198,22 +234,25 @@ function Data({option, updateOption}) {
                     updateOption={updateOption}
                     optionPath='title[0].text'
                     
-                />
-                 <Input 
-                    label="Subtitle:"
-                    type='textarea'
-                    
-                    option={option}
-                    updateOption={updateOption}
-                    optionPath='title[0].subtext'
-                />
-                <Input
-                    label="Source:"
-                    type='textarea'
-                    option={option}
-                    updateOption={updateOption}
-                    optionPath='graphic[0].style.text'
-                />
+                    />
+                    <Input 
+                        label="Subtitle:"
+                        type='textarea'
+                        
+                        option={option}
+                        updateOption={updateOption}
+                        optionPath='title[0].subtext'
+                    />
+                    <Input
+                        label="Source:"
+                        type='textarea'
+                        option={option}
+                        updateOption={updateOption}
+                        optionPath='graphic[0].style.text'
+                    /> 
+                 </div>
+                }
+                
             </div>
          </div>
          
