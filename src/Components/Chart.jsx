@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { cloneDeep } from 'lodash';
 
 function Chart({option, updateOption}) {
-  const debugCount = useRef(0);
   const chartRef = useRef();
 
   function getSeriesInfo(chart) {
@@ -38,6 +37,9 @@ function Chart({option, updateOption}) {
     const chartDom = chartRef.current;
     const echarts = window.echarts;
     var myChart = echarts.init(chartDom);
+    myChart.resize({opts: {
+      height: 'auto'
+    }});
     myChart.setOption(option);    
 
     /*
@@ -51,18 +53,25 @@ function Chart({option, updateOption}) {
       updateOption(newOption);
     };
 
-    const legendDimensions = getComponentDimensions(myChart, 'legend', 0);
-    console.log('legendHeight', legendDimensions);
+    let legendDimensions = {height: 0};
+
+    if (option.legend.length) {
+      legendDimensions = getComponentDimensions(myChart, 'legend', 0);
+      console.log('legendHeight', legendDimensions);
+    }
 
     /*
      * Adjust chart placement based on title height and legend height
      */
+
+    let chartHeight;
 
     if (option.series.length) {
       if (option.series[0].type === 'pie') {
         const newOption = {};
         newOption.series = cloneDeep(option.series);
         const { center, setCenter} = newOption.series[0];
+        chartHeight = newOption.series[0].radius * 2;
         if (center[1] !== setCenter[1] + titleHeight + legendDimensions.height) {
           console.log('Updating Pie center');
           center[1] = setCenter[1]  + titleHeight + legendDimensions.height;
@@ -72,12 +81,23 @@ function Chart({option, updateOption}) {
       }
     }
 
+    const neededHeight = titleHeight + 4 + legendDimensions.height + chartHeight + 100;
+
+    console.log('neededHeight', neededHeight, option.info.chartHeight);
+
+    if (option.info.containerHeight < neededHeight) {
+      const newOption = {};
+      newOption.info = cloneDeep(option.info);
+      newOption.info.containerHeight = neededHeight;
+      console.log('chartDom', chartDom);
+      chartDom.style.height = neededHeight + 'px';
+      updateOption(newOption);
+    }
+
+    
   }
 
   useEffect(() => {
-    ++debugCount.current;
-    if (debugCount.current > 10) return;
-
     const width = chartRef.current.clientWidth;
     const height = chartRef.current.clientHeight;
     const { containerWidth, containerHeight} = option.info;
