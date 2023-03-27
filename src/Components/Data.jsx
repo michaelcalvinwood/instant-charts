@@ -56,8 +56,20 @@ function Data({option, updateOption}) {
     }
 
     const addPieSeries = csv => {
-        const legendData = [];
+        /*
+         * Calculate pie placement
+         */
+        const { containerWidth, containerHeight } = option.info;
 
+        const center = [.5 * containerWidth, .5 * containerHeight];
+        const maxRadius = containerWidth < containerHeight ? containerWidth / 2 : containerHeight / 2;
+        const radius = maxRadius * .9;
+
+
+        /*
+         * add series
+         */
+        const legendData = [];
         const data = [];
         for (let i = 1; i < csv[0].length; ++i) {
             const name = csv[0][i];
@@ -70,6 +82,7 @@ function Data({option, updateOption}) {
         newOption.series.push({
             name: csv[1][0],
             type: 'pie',
+            center, radius,
             data,
             emphasis: {
                 itemStyle: {
@@ -106,7 +119,7 @@ function Data({option, updateOption}) {
          */
         if (legendData.length) {
             newOption.legend = cloneDeep(option.legend);
-            newOption.legend.push({data: legendData});
+            newOption.legend.push({data: legendData, top: 0});
         }
        
         updateOption(newOption);
@@ -184,7 +197,7 @@ function Data({option, updateOption}) {
          */
         if (legendData.length) {
             newOption.legend = cloneDeep(option.legend);
-            newOption.legend.push({data: legendData});
+            newOption.legend.push({data: legendData, top: 0});
         }
         
         updateOption(newOption);
@@ -261,7 +274,7 @@ function Data({option, updateOption}) {
          */
         if (legendData.length) {
             newOption.legend = cloneDeep(option.legend);
-            newOption.legend.push({data: legendData});
+            newOption.legend.push({data: legendData, top: 0});
         }
         
         updateOption(newOption);

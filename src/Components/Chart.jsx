@@ -23,9 +23,7 @@ function Chart({option, updateOption}) {
     if (!option.title.length) return 0;
 
     const title = option.title[index].text;
-    console.log('title', title);
     const subtitle = option.title[index].subtext;
-    console.log('subtitle', subtitle);
     const titleLines = title ? title.split("\n").length : 0;
     const subtitleLines = subtitle ? subtitle.split("\n").length : 0;
     const titleHeight = title ? titleLines * option.title[index].textStyle.lineHeight + option.title[index].padding : 0;
@@ -34,14 +32,22 @@ function Chart({option, updateOption}) {
   }
 
   const displayChart = () => {
+    /*
+     * Adjust legend placement based on title height
+     */
     const titleHeight = getTitleHeight();
-    console.log('totalHeight', titleHeight);
-    if (option.legend[0].top !== titleHeight + 4) {
+    if (option.legend.length && option.legend[0].top !== titleHeight + 4) {
       const newOption = {};
       newOption.legend = cloneDeep(option.legend);
       newOption.legend[0].top = titleHeight + 4;
       updateOption(newOption);
     };
+
+    if (option.series.length) {
+      if (option.series[0].type === 'pie') {
+
+      }
+    }
 
     const chartDom = chartRef.current;
     const echarts = window.echarts;
@@ -50,6 +56,15 @@ function Chart({option, updateOption}) {
   }
 
   useEffect(() => {
+    const width = chartRef.current.clientWidth;
+    const height = chartRef.current.clientHeight;
+    const { containerWidth, containerHeight} = option.info;
+    if (containerWidth !== width || containerHeight !== height) {
+      const newOption = {info: {}};
+      newOption.info.containerWidth = width;
+      newOption.info.containerHeight = height;
+      updateOption(newOption);
+    }
     displayChart();
   })
 
