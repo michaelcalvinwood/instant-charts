@@ -101,6 +101,8 @@ function Data({option, updateOption}) {
     }
 
     const addBarSeries = csv => {
+        const legendData = [];
+
         const newOption = {};
 
         /*
@@ -109,6 +111,7 @@ function Data({option, updateOption}) {
         newOption.series = cloneDeep(option.series);
         for (let i = 1; i < csv.length; ++i) {
           const name = csv[i][0];
+          if (name) legendData.push(name);
           console.log('bar name', name);
           const data = [];
           for (let j = 1; j < csv[i].length; ++ j) {
@@ -166,7 +169,13 @@ function Data({option, updateOption}) {
         newOption.grid = cloneDeep(option.grid);
         newOption.grid.push({});
 
-       
+        /*
+         * Configure legend
+         */
+        if (legendData.length) {
+            newOption.legend = cloneDeep(option.legend);
+            newOption.legend.push({data: legendData});
+        }
         
         updateOption(newOption);
         
