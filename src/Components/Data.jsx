@@ -1,5 +1,5 @@
 import './Data.scss';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
 import { cloneDeep } from 'lodash';
@@ -20,6 +20,8 @@ import Input from './Input';
 
 function Data({option, updateOption}) {
     const [chartType, setChartType] = useState('');
+
+   
     
     const capitalized = word => word.charAt(0).toUpperCase() + word.slice(1);
 
@@ -288,7 +290,7 @@ function Data({option, updateOption}) {
         const newOption = cloneDeep(option);
         console.log('constructGroupBar', newOption)
         let sectionNum = 0;
-        newOption.grid.push({ id: sectionNum});
+        newOption.grid.push({ id: sectionNum, height: 0, show: false});
         newOption.xAxis.push({
             id: sectionNum,
             gridIndex: sectionNum,
@@ -308,35 +310,73 @@ function Data({option, updateOption}) {
         
         let prev = 'dleiwufoiihiuwehfhsdkjhw8ytealdsj;lasdghklashg';
 
+        let maxValue = -10000000;
+        for (let i = 1; i < csv.length; ++i) {
+            for (let j = 2; j < csv[0].length; ++j) {
+                const value = convertValue(csv[i][j]);
+                if (value > maxValue) maxValue = value;
+            }
+        }
+        //maxValue = maxValue * 3;
+
+        console.log('maxValue', maxValue);
+
         for (let i = 1; i < csv.length; ++i) {
             if (csv[i][0] !== prev) {
                 ++sectionNum;
                 prev = csv[i][0];
                 legend1.push(csv[i][0]);
                 newOption.grid.push({
-                    id: sectionNum
+                    id: sectionNum,
+                    height: 200,
+                    left: 150
                 })
                 
                 newOption.xAxis.push({
                     id: sectionNum,
                     gridIndex: sectionNum,
                     type: 'value',
+                    max: maxValue,
+                    show: false
                     
                 })
 
                 const yData = [];
                 for (let j = 2; j < csv[0].length; ++j) {
-                    if (csv[0][j]) yData.push(csv[0][j])
+                    if (csv[0][j]) yData.push({
+                        value: csv[0][j],
+                        textStyle: {
+                            color: 'black',
+                            
+                        }
+                    })
                 };
 
                 newOption.yAxis.push({
                     id: sectionNum,
                     gridIndex: sectionNum,
+                    position: 'left',
+                    show: true,
                     type: 'category',
                     data: yData,
+                    name: prev,
+                    nameLocation: 'end',
+                    nameGap: 0,
+                    nameTextStyle: {
+                        color: 'black',
+                        align: 'left',
+                        padding: [0, 0, 0, 8],
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                        lineHeight: 22
+                    }
+                    
                 })
             }
 
+            console.log('i, csv.length', i, csv.length);
+
+            if (i === csv.length - 1) newOption.xAxis[sectionNum].show = true;
             
             const name = csv[i][1];
             if (name) legend2.push(name);
@@ -351,6 +391,9 @@ function Data({option, updateOption}) {
                 name,
                 data, 
                 type: 'bar', 
+                barWidth: 30,
+                barGap: '30%',
+                //stack: 'total ' + sectionNum,
                 xAxisIndex: sectionNum, 
                 yAxisIndex: sectionNum,
                 showBackground: true,
@@ -367,6 +410,24 @@ function Data({option, updateOption}) {
                 });
               
             console.log(sectionNum, csv[i][0]);
+        }
+
+        // set the height of each grid
+
+        for (let i = 1; i < newOption.grid.length; ++i) {
+            const numGroups = newOption.yAxis[i].data.length;
+
+            let count = 0;
+            for (let j = 0; j < newOption.series.length; ++j) {
+                const yAxisIndex = newOption.series[j].yAxisIndex;
+                if (yAxisIndex === i) ++count;
+            }
+
+            const numBars = numGroups * count;
+            const barWidth = newOption.series[0].barWidth;
+            const barGap = Number(newOption.series[0].barGap.replaceAll('%', ''))/100 * barWidth;
+            const heightNeeded = numBars * (barWidth + barGap);
+            newOption.grid[i].height = heightNeeded;
         }
 
         updateOption(newOption);
@@ -417,6 +478,15 @@ function Data({option, updateOption}) {
             
         })
     }
+
+    useEffect(() => {
+        if (option.info.chartType !== chartType) {
+            const newOption = {};
+            newOption.info = cloneDeep(option.info);
+            newOption.info.chartType = chartType;
+            updateOption(newOption);
+        }
+    })
 
   return (
     <div className='Data'>

@@ -34,17 +34,18 @@ function Chart({option, updateOption}) {
 
   const maxRadius = (cWidth, cHeight) => cWidth < cHeight ? cWidth / 2 : cHeight / 2;
 
-  const displayChart = () => {
+  /*
+   * Chart Type A are simple line, bar, and pie charts
+   */
+
+  const displayChartTypeA = () => {
     const chartDom = chartRef.current;
     const echarts = window.echarts;
-    console.log('theTheme', theTheme, typeof theTheme);
-    // echarts.registerTheme(theTheme.themeName, theTheme.theme);
-    // var myChart = echarts.init(chartDom, theTheme.themeName);
     var myChart = echarts.init(chartDom);
     myChart.resize({opts: {
       height: 'auto'
     }});
-    myChart.setOption(option);    
+    myChart.setOption(option);
 
     /*
      * Adjust legend placement based on title height
@@ -102,8 +103,35 @@ function Chart({option, updateOption}) {
       chartDom.style.height = neededHeight + 'px';
       //updateOption(newOption);
     }
+  }
 
+
+
+  const displayGroupedBarChart = () => {
+    console.log('displayGroupedBarChart');
+    const chartDom = chartRef.current;
+    const echarts = window.echarts;
+    var myChart = echarts.init(chartDom);
+    myChart.resize({opts: {
+      height: 'auto'
+    }});
+    myChart.setOption(option);
     
+    if (!option.info.sectionAdjusted && option.grid.length) {
+      let newOption = cloneDeep(option);
+      const chartTitleHeight = getTitleHeight(0);
+      let sectionBegin = chartTitleHeight + 12 + option.yAxis[1].nameTextStyle.lineHeight;
+      newOption.grid[1].top = sectionBegin;
+      for (let i = 2; i < option.grid.length; ++i) {
+        sectionBegin += option.grid[i-1].height + option.yAxis[i-1].nameTextStyle.lineHeight * 2.5;
+        newOption.grid[i].top = sectionBegin;
+      }
+      newOption.info.sectionAdjusted = true;
+      updateOption(newOption);
+      chartDom.style.height = 3000 + 'px';
+    }
+
+
   }
 
   useEffect(() => {
@@ -116,7 +144,19 @@ function Chart({option, updateOption}) {
       newOption.info.containerHeight = height;
       updateOption(newOption);
     }
-    displayChart();
+
+
+    switch (option.info.chartType) {
+      case 'bar':
+      case 'line':
+      case 'pie':
+        displayChartTypeA();
+        break;
+      case 'grouped bar':
+        displayGroupedBarChart();
+        break;
+    }
+    
   })
 
   return (

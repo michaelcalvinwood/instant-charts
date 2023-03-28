@@ -12,12 +12,14 @@ function App() {
     'Data'
   ]
   let template = {
-
     info: {
       containerWidth: 0,
       containerHeight: 0,
       curSection: null,
       sections: [],
+      chartType: '',
+      template: 'default',
+      sectionAdjusted: false,
     },
     tooltip: {},
     title: [],
