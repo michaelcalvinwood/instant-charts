@@ -6,12 +6,16 @@ import { merge, cloneDeep } from 'lodash';
 import Sections from './Components/Sections';
 import Chart from './Components/Chart';
 
+
 function App() {
   const selections = [
     'Data'
   ]
   let template = {
+
     info: {
+      containerWidth: 0,
+      containerHeight: 0,
       curSection: null,
       sections: [],
     },
@@ -30,8 +34,22 @@ function App() {
         text: 'Source:',
         fontSize: 12,
         lineHeight: 16
+      }}, 
+      {
+        id: 'logo',
+        type: 'image',
+        style: {
+          image: 'https://node.pymnts.com/images/svg/PYMNTS_data_logo.svg',
+          width: 128,
+          height: 24
+        },
+        bottom: 0,
+        right: 0,
+        z:10,
+        invisible: false
+
       }
-    }],
+    ],
     series: [],
     toolbox: {
       feature: {
@@ -41,7 +59,8 @@ function App() {
         },
         saveAsImage: {},
       }
-    }
+    },
+
   };
 
   const [selection, setSelection] = useState('Data');

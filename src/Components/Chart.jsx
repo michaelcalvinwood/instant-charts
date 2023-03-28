@@ -1,6 +1,7 @@
 import './Chart.scss';
 import React, { useEffect, useRef, useState } from 'react';
 import { cloneDeep } from 'lodash';
+import theTheme from '../themes/test.js'
 
 function Chart({option, updateOption}) {
   const chartRef = useRef();
@@ -36,6 +37,9 @@ function Chart({option, updateOption}) {
   const displayChart = () => {
     const chartDom = chartRef.current;
     const echarts = window.echarts;
+    console.log('theTheme', theTheme, typeof theTheme);
+    // echarts.registerTheme(theTheme.themeName, theTheme.theme);
+    // var myChart = echarts.init(chartDom, theTheme.themeName);
     var myChart = echarts.init(chartDom);
     myChart.resize({opts: {
       height: 'auto'
@@ -81,17 +85,22 @@ function Chart({option, updateOption}) {
       }
     }
 
-    const neededHeight = titleHeight + 4 + legendDimensions.height + chartHeight + 100;
+    console.log('chartHeight', chartHeight);
 
-    console.log('neededHeight', neededHeight, option.info.chartHeight);
+    const sourceDimensions = getComponentDimensions(myChart, 'graphic', 0);
+    console.log('sourceDimensions', sourceDimensions);
 
-    if (option.info.containerHeight < neededHeight) {
+    const neededHeight = titleHeight + 12 + legendDimensions.height + chartHeight + sourceDimensions.height;
+    //const neededHeight = titleHeight + 12 + legendDimensions.height + chartHeight
+    console.log('neededHeight', neededHeight, option.info.containerHeight);
+
+    if (!isNaN(neededHeight) && option.info.containerHeight < neededHeight) {
       const newOption = {};
       newOption.info = cloneDeep(option.info);
       newOption.info.containerHeight = neededHeight;
       console.log('chartDom', chartDom);
       chartDom.style.height = neededHeight + 'px';
-      updateOption(newOption);
+      //updateOption(newOption);
     }
 
     

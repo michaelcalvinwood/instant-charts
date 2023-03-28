@@ -142,7 +142,7 @@ function Data({option, updateOption}) {
           if (name) legendData.push(name);
           console.log('bar name', name);
           const data = [];
-          for (let j = 1; j < csv[i].length; ++ j) {
+          for (let j = 1; j < csv[i].length; ++j) {
             if (!csv[i][j]) continue;
             let value = convertValue(csv[i][j]);
             data.push(value);
@@ -284,8 +284,92 @@ function Data({option, updateOption}) {
         updateOption(newOption);
     }
 
-    const constructStack = csv => {
+    const constructGroupBar = csv => {
+        const newOption = cloneDeep(option);
+        console.log('constructGroupBar', newOption)
+        let sectionNum = 0;
+        newOption.grid.push({ id: sectionNum});
+        newOption.xAxis.push({
+            id: sectionNum,
+            gridIndex: sectionNum,
+            type: 'value',
+            
+        })
+        newOption.yAxis.push({
+            id: sectionNum,
+            gridIndex: sectionNum,
+            type: 'category',
+            data: [],
+        })
+        console.log('constructGroupBar newOption title', newOption)
+
+        const legend1 = [];
+        const legend2 = []
         
+        let prev = 'dleiwufoiihiuwehfhsdkjhw8ytealdsj;lasdghklashg';
+
+        for (let i = 1; i < csv.length; ++i) {
+            if (csv[i][0] !== prev) {
+                ++sectionNum;
+                prev = csv[i][0];
+                legend1.push(csv[i][0]);
+                newOption.grid.push({
+                    id: sectionNum
+                })
+                
+                newOption.xAxis.push({
+                    id: sectionNum,
+                    gridIndex: sectionNum,
+                    type: 'value',
+                    
+                })
+
+                const yData = [];
+                for (let j = 2; j < csv[0].length; ++j) {
+                    if (csv[0][j]) yData.push(csv[0][j])
+                };
+
+                newOption.yAxis.push({
+                    id: sectionNum,
+                    gridIndex: sectionNum,
+                    type: 'category',
+                    data: yData,
+                })
+            }
+
+            
+            const name = csv[i][1];
+            if (name) legend2.push(name);
+            console.log('bar name', name);
+            const data = [];
+            for (let j = 2; j < csv[i].length; ++j) {
+                if (!csv[i][j]) continue;
+                let value = convertValue(csv[i][j]);
+                data.push(value);
+            }
+            newOption.series.push({
+                name,
+                data, 
+                type: 'bar', 
+                xAxisIndex: sectionNum, 
+                yAxisIndex: sectionNum,
+                showBackground: true,
+                backgroundStyle: {
+                    color: 'rgba(180, 180, 180, 0.2)'
+                },
+                tooltip: {
+                    formatter: "<div style='text-align:center'>{b}<br>{a}<br>{c}</div>",
+                    backgroundColor: "rgba(0, 0, 0, .8)",
+                    textStyle: {
+                    color: 'white'
+                    }
+                }
+                });
+              
+            console.log(sectionNum, csv[i][0]);
+        }
+
+        updateOption(newOption);
     }
 
     const uploadFiles = files => {
@@ -316,8 +400,8 @@ function Data({option, updateOption}) {
                     return addBarSeries(csv);
                 case 'line':
                     return addLineSeries(csv);
-                case 'stack':
-                    return constructStack(csv);
+                case 'grouped bar':
+                    return constructGroupBar(csv);
                 
             }
         })
@@ -333,7 +417,6 @@ function Data({option, updateOption}) {
             
         })
     }
-
 
   return (
     <div className='Data'>
@@ -351,7 +434,7 @@ function Data({option, updateOption}) {
                             <option value="bar">&nbsp;Bar</option>
                             <option value="line">&nbsp;Line</option>
                             <option value="pie">&nbsp;Pie</option>
-                            <option value="stack">&nbsp;Stack</option>
+                            <option value="grouped bar">&nbsp;Grouped Bar</option>
                     </select> 
                 { chartType && 
                     <div className='dropzone-container'>
@@ -375,7 +458,6 @@ function Data({option, updateOption}) {
                     <Input 
                     label='Title:'
                     type='textarea'
-                    
                     option={option}
                     updateOption={updateOption}
                     optionPath='title[0].text'
@@ -383,8 +465,7 @@ function Data({option, updateOption}) {
                     />
                     <Input 
                         label="Subtitle:"
-                        type='textarea'
-                        
+                        type='textarea'         
                         option={option}
                         updateOption={updateOption}
                         optionPath='title[0].subtext'
