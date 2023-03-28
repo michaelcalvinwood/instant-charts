@@ -336,21 +336,33 @@ function Data({option, updateOption}) {
                     id: sectionNum,
                     gridIndex: sectionNum,
                     type: 'value',
-                    max: maxValue,
+                    //max: maxValue,
                     show: false
                     
                 })
 
                 const yData = [];
-                for (let j = 2; j < csv[0].length; ++j) {
-                    if (csv[0][j]) yData.push({
-                        value: csv[0][j],
-                        textStyle: {
-                            color: 'black',
-                            
+
+                // prev is new ("N")
+                const seriesData = [];
+                
+                for (let j = i; j < csv.length; ++j) {
+                    if (csv[j][0] === prev) {
+                        yData.push({ 
+                            value: csv[j][1],
+                            textStyle: {
+                                color: 'black'
+                            }
+                        });
+                        for (let k = 2; k < csv[0].length; ++k) {
+                            if (typeof seriesData[k-2] === 'undefined') seriesData[k-2] = [];
+                            seriesData[k-2].push({
+                                value: convertValue(csv[j][k])
+                            })
                         }
-                    })
-                };
+                      
+                    } else break;
+                }
 
                 newOption.yAxis.push({
                     id: sectionNum,
@@ -372,44 +384,54 @@ function Data({option, updateOption}) {
                     }
                     
                 })
+
+                const name = csv[i][1];
+                if (name) legend2.push(name);
+                console.log('bar name', name);
+                // const data = [];
+                // for (let j = 2; j < csv[i].length; ++j) {
+                //     if (!csv[i][j]) continue;
+                //     let value = convertValue(csv[i][j]);
+                //     data.push(value);
+                // }
+
+                for (let m = 0; m < seriesData.length; ++m) {
+                    newOption.series.push({
+                        name: csv[0][m+2],
+                        data: seriesData[m], 
+                        type: 'bar', 
+                        barWidth: 30,
+                        barGap: '30%',
+                        stack: 'total ' + sectionNum,
+                        xAxisIndex: sectionNum, 
+                        yAxisIndex: sectionNum,
+                        showBackground: true,
+                        backgroundStyle: {
+                            color: 'rgba(180, 180, 180, 0.2)'
+                        },
+                        tooltip: {
+                            formatter: "<div style='text-align:center'>{b}<br>{a}<br>{c}</div>",
+                            backgroundColor: "rgba(0, 0, 0, .8)",
+                            textStyle: {
+                            color: 'white'
+                            }
+                        }
+                        });
+                }
+                  
             }
 
             console.log('i, csv.length', i, csv.length);
 
             if (i === csv.length - 1) newOption.xAxis[sectionNum].show = true;
             
-            const name = csv[i][1];
-            if (name) legend2.push(name);
-            console.log('bar name', name);
-            const data = [];
-            for (let j = 2; j < csv[i].length; ++j) {
-                if (!csv[i][j]) continue;
-                let value = convertValue(csv[i][j]);
-                data.push(value);
-            }
-            newOption.series.push({
-                name,
-                data, 
-                type: 'bar', 
-                barWidth: 30,
-                barGap: '30%',
-                //stack: 'total ' + sectionNum,
-                xAxisIndex: sectionNum, 
-                yAxisIndex: sectionNum,
-                showBackground: true,
-                backgroundStyle: {
-                    color: 'rgba(180, 180, 180, 0.2)'
-                },
-                tooltip: {
-                    formatter: "<div style='text-align:center'>{b}<br>{a}<br>{c}</div>",
-                    backgroundColor: "rgba(0, 0, 0, .8)",
-                    textStyle: {
-                    color: 'white'
-                    }
-                }
-                });
+   
               
             console.log(sectionNum, csv[i][0]);
+        }
+
+        newOption.legend[0] = {
+            data: ['Received a discount', 'Used a coupon']
         }
 
         // set the height of each grid

@@ -42,6 +42,11 @@ function Chart({option, updateOption}) {
     const chartDom = chartRef.current;
     const echarts = window.echarts;
     var myChart = echarts.init(chartDom);
+    myChart.on('legendselectchanged', function (params) {
+      console.clear();
+      console.log(params);
+      console.log(option);
+    });
     myChart.resize({opts: {
       height: 'auto'
     }});
@@ -112,6 +117,11 @@ function Chart({option, updateOption}) {
     const chartDom = chartRef.current;
     const echarts = window.echarts;
     var myChart = echarts.init(chartDom);
+    myChart.on('legendselectchanged', function (params) {
+      console.clear();
+      console.log(params);
+      console.log(option);
+    });
     myChart.resize({opts: {
       height: 'auto'
     }});
