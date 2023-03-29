@@ -31,6 +31,7 @@ function App() {
       curSection: null,
       sections: [],
       chartType: '',
+      chartTemplate: '',
       template: 'default',
       sectionAdjusted: false,
     },
