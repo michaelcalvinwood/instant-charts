@@ -31,7 +31,7 @@ function App() {
       curSection: null,
       sections: [],
       chartType: '',
-      chartTemplate: '',
+      chartTemplate: 'Default',
       template: 'default',
       sectionAdjusted: false,
     },
@@ -94,7 +94,7 @@ function App() {
   return (
     <div className="App">
       {selection === 'Data' && <Data option={option} updateOption={updateOption} />}
-      <Templates />
+      <Templates  option={option} updateOption={updateOption}/>
       <Chart option={option} updateOption={updateOption}/>
     </div>
   );
