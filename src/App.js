@@ -3,7 +3,7 @@ import './App.scss';
 import { useEffect, useRef, useState } from 'react';
 import Data from './Components/Data';
 import { merge, cloneDeep } from 'lodash';
-import Sections from './Components/Sections';
+import Templates from './Components/Templates';
 import Chart from './Components/Chart';
 
 
@@ -93,7 +93,7 @@ function App() {
   return (
     <div className="App">
       {selection === 'Data' && <Data option={option} updateOption={updateOption} />}
-      <Sections />
+      <Templates />
       <Chart option={option} updateOption={updateOption}/>
     </div>
   );
