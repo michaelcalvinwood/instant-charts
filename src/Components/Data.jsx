@@ -329,7 +329,7 @@ function Data({option, updateOption}) {
                 newOption.grid.push({
                     id: sectionNum,
                     height: 200,
-                    left: 150
+                    left: 0
                 })
                 
                 newOption.xAxis.push({
@@ -351,7 +351,8 @@ function Data({option, updateOption}) {
                         yData.push({ 
                             value: csv[j][1],
                             textStyle: {
-                                color: 'black'
+                                color: 'black',
+                                width: 0
                             }
                         });
                         for (let k = 2; k < csv[0].length; ++k) {
@@ -365,10 +366,11 @@ function Data({option, updateOption}) {
                 }
 
                 newOption.yAxis.push({
+                    show: true,
                     id: sectionNum,
                     gridIndex: sectionNum,
                     position: 'left',
-                    show: true,
+                    
                     type: 'category',
                     data: yData,
                     name: prev,
@@ -415,8 +417,23 @@ function Data({option, updateOption}) {
                             textStyle: {
                             color: 'white'
                             }
-                        }
-                        });
+                        },
+                        label: {
+                            normal: {
+                              color: 'black',
+                              show: true,
+                              position: ['8px', '-24px'],
+                              textStyle: {
+                                fontSize: 16,
+                                lineHeight: 24
+                              },
+                              formatter: function (a, b) {
+                                //console.log('formatter', a , b)
+                                return `${a.name}`;
+                              }
+                            }
+                          }
+                    });
                 }
                   
             }
