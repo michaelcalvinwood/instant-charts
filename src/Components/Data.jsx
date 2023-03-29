@@ -329,14 +329,14 @@ function Data({option, updateOption}) {
                 newOption.grid.push({
                     id: sectionNum,
                     height: 200,
-                    left: 0
+                    left: 4
                 })
                 
                 newOption.xAxis.push({
                     id: sectionNum,
                     gridIndex: sectionNum,
                     type: 'value',
-                    //max: maxValue,
+                    max: maxValue,
                     show: false
                     
                 })
@@ -375,7 +375,7 @@ function Data({option, updateOption}) {
                     data: yData,
                     name: prev,
                     nameLocation: 'end',
-                    nameGap: 0,
+                    nameGap: 12,
                     nameTextStyle: {
                         color: 'black',
                         align: 'left',
@@ -403,8 +403,8 @@ function Data({option, updateOption}) {
                         data: seriesData[m], 
                         type: 'bar', 
                         barWidth: 30,
-                        barGap: '30%',
-                        stack: 'total ' + sectionNum,
+                        barGap: '100%',
+                        // stack: 'total ' + sectionNum,
                         xAxisIndex: sectionNum, 
                         yAxisIndex: sectionNum,
                         showBackground: true,
@@ -429,7 +429,7 @@ function Data({option, updateOption}) {
                               },
                               formatter: function (a, b) {
                                 //console.log('formatter', a , b)
-                                return `${a.name}`;
+                                return `${a.name}: ${a.value}`;
                               }
                             }
                           }
