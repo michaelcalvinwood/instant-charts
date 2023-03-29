@@ -19,10 +19,6 @@ import Input from './Input';
  */
 
 function Data({option, updateOption}) {
-    const [chartType, setChartType] = useState('');
-
-   
-    
     const capitalized = word => word.charAt(0).toUpperCase() + word.slice(1);
 
     const addTitle = (fileName, csv) => {
@@ -494,7 +490,7 @@ function Data({option, updateOption}) {
             console.log('csv', csv);
             addTitle(files[0].name, csv);
 
-            switch (chartType) {
+            switch (option.info.chartType) {
                 case 'pie':
                     return addPieSeries(csv);
                 case 'bar':
@@ -519,34 +515,30 @@ function Data({option, updateOption}) {
         })
     }
 
-    useEffect(() => {
-        if (option.info.chartType !== chartType) {
-            const newOption = {};
-            newOption.info = cloneDeep(option.info);
-            newOption.info.chartType = chartType;
-            updateOption(newOption);
-        }
-    })
+    // useEffect(() => {
+    //     if (option.info.chartType !== chartType) {
+    //         const newOption = {};
+    //         newOption.info = cloneDeep(option.info);
+    //         newOption.info.chartType = chartType;
+    //         updateOption(newOption);
+    //     }
+    // })
 
   return (
     <div className='Data'>
         <h1 className='Data__heading'>Data</h1>
          <div className="Data__sections">
             <div className="Data__section-left">
-                { !chartType && <h3 className='Data__chart-type-header'>Chart Type</h3> }
-                <select id="chartType" 
-                        name = "chartType" 
-                        className='Data__select-chart-type' 
-                        onChange={e => setChartType(e.target.value)} 
-                        value={chartType}
-                     >
-                            <option value=''>---</option>
-                            <option value="bar">&nbsp;Bar</option>
-                            <option value="line">&nbsp;Line</option>
-                            <option value="pie">&nbsp;Pie</option>
-                            <option value="grouped bar">&nbsp;Grouped Bar</option>
-                    </select> 
-                { chartType && 
+                { !option.info.chartType && <h3 className='Data__chart-type-header'>Chart Type</h3> }
+                <Input
+                    type='select'
+                    selectKey='chartType'
+                    selectValues={['', 'bar', 'line', 'pie', 'grouped bar']}
+                    option={option}
+                    updateOption={updateOption}
+                    optionPath='info.chartType'
+                /> 
+                { option.info.chartType && 
                     <div className='dropzone-container'>
                         <Dropzone 
                             onDrop={acceptedFiles => uploadFiles(acceptedFiles)}>
@@ -562,8 +554,7 @@ function Data({option, updateOption}) {
                     </div> 
                 }
             </div>
-            <div className="Data__section-middle">Middle</div>
-            <div className="Data__section-right">
+            <div className="Data__section-middle">
                 { option.series.length !== 0 && <div>
                     <Input 
                     label='Title:'
@@ -589,6 +580,9 @@ function Data({option, updateOption}) {
                     /> 
                  </div>
                 }
+            </div>
+            <div className="Data__section-right">
+                
                 
             </div>
          </div>
