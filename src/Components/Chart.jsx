@@ -123,10 +123,15 @@ function Chart({option, updateOption}) {
     }});
     myChart.setOption(option);
     
-    if (!option.info.sectionAdjusted && option.grid.length) {
+    if (!option.info.sectionAdjusted && option.grid.length && option.legend.length) {
       let newOption = cloneDeep(option);
       const chartTitleHeight = getTitleHeight(0);
-      let sectionBegin = chartTitleHeight + 12 + option.yAxis[1].nameTextStyle.lineHeight;
+      let sectionBegin = chartTitleHeight + 12;
+      newOption.legend[0].top = sectionBegin;
+      const legendDimensions = getComponentDimensions(myChart, 'legend', 0);
+      console.log('legendDimensions', legendDimensions);
+      sectionBegin += legendDimensions.height + option.yAxis[1].nameTextStyle.lineHeight
+
       newOption.grid[1].top = sectionBegin;
       for (let i = 2; i < option.grid.length; ++i) {
         sectionBegin += option.grid[i-1].height + option.yAxis[i-1].nameTextStyle.lineHeight * 2.5;

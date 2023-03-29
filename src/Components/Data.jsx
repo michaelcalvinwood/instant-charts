@@ -448,7 +448,8 @@ function Data({option, updateOption}) {
         }
 
         newOption.legend[0] = {
-            data: ['Received a discount', 'Used a coupon']
+            data: ['Received a discount', 'Used a coupon'],
+            top: 0
         }
 
         // set the height of each grid
