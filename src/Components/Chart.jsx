@@ -1,9 +1,9 @@
 import './Chart.scss';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, theChart } from 'react';
 import { cloneDeep } from 'lodash';
 import theTheme from '../themes/test.js'
 
-function Chart({option, updateOption}) {
+function Chart({option, updateOption, theChart}) {
   const chartRef = useRef();
 
   function getSeriesInfo(chart) {
@@ -41,7 +41,8 @@ function Chart({option, updateOption}) {
   const displayChartTypeA = () => {
     const chartDom = chartRef.current;
     const echarts = window.echarts;
-    var myChart = echarts.init(chartDom);
+    if (!theChart.current) theChart.current = echarts.init(chartDom);
+    var myChart = theChart.current;
     myChart.on('legendselectchanged', function (params) {
       console.clear();
       console.log(params);
@@ -116,6 +117,8 @@ function Chart({option, updateOption}) {
     console.log('displayGroupedBarChart');
     const chartDom = chartRef.current;
     const echarts = window.echarts;
+    console.log('theChart' , theChart);
+    if (!theChart.current) theChart.current = echarts.init(chartDom);
     var myChart = echarts.init(chartDom);
     
     myChart.resize({opts: {

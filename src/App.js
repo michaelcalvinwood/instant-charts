@@ -8,6 +8,8 @@ import Chart from './Components/Chart';
 
 
 function App() {
+  const theChart = useRef(null);
+
   const selections = [
     'Data'
   ]
@@ -94,8 +96,8 @@ function App() {
   return (
     <div className="App">
       {selection === 'Data' && <Data option={option} updateOption={updateOption} />}
-      <Templates  option={option} updateOption={updateOption}/>
-      <Chart option={option} updateOption={updateOption}/>
+      <Templates  option={option} updateOption={updateOption} theChart={theChart}/>
+      <Chart option={option} updateOption={updateOption} theChart={theChart}/>
     </div>
   );
 }
