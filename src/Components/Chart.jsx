@@ -146,6 +146,68 @@ function Chart({option, updateOption, theChart}) {
 
   }
 
+  const handlePercentages = () => {
+     let percentageFlagAdjusted = true;
+
+     for (let i = 0; i < option.series.length; ++i) {
+       for (let j = 0; j < option.series[i].data.length; ++j) {
+         if (typeof option.series[i].data[j].percentFlag === 'undefined') {
+           percentageFlagAdjusted = false;
+         } else if (option.series[i].data[j].percentFlag !== option.info.percentFlag) {
+           percentageFlagAdjusted = false;
+         }
+       }
+     }
+ 
+     if (!percentageFlagAdjusted) {
+       const newOption = {series: cloneDeep(option.series)};
+       for (let i = 0; i < newOption.series.length; ++i) {
+         for (let j = 0; j < newOption.series[i].data.length; ++j) {
+           const flagValue = option.info.percentFlag;
+           const curValue = newOption.series[i].data[j].percentFlag ? true : false;
+           if (flagValue && !curValue) newOption.series[i].data[j].multiplier = 100;
+           if (!flagValue && curValue) newOption.series[i].data[j].multiplier = 1;
+           newOption.series[i].data[j].percentFlag = option.info.percentFlag
+         }
+       }
+       updateOption(newOption);
+     }
+  }
+
+  const handleDecimalPlaces = () => {
+    let decimalAdjusted = true;
+
+    for (let i = 0; i < option.series.length; ++i) {
+      for (let j = 0; j < option.series[i].data.length; ++j) {
+        if (typeof option.series[i].data[j].decimal === 'undefined') {
+          decimalAdjusted = false;
+        } else if (option.series[i].data[j].decimal !== option.info.decimal) {
+          decimalAdjusted = false;
+        }
+      }
+    }
+
+    if (!decimalAdjusted) {
+      const newOption = {series: cloneDeep(option.series)};
+      console.log('handleDecimalPlaces newOption', newOption);
+      for (let i = 0; i < newOption.series.length; ++i) {
+        for (let j = 0; j < newOption.series[i].data.length; ++j) {
+          const data = newOption.series[i].data[j];
+
+          const value = option.info.decimal;
+          const curValue = data.decimal ? data.decimal : null;
+          if (value !== curValue) {
+            if (typeof data.origValue === 'undefined') data.origValue = data.value;
+            data.value = data.multiplier ? Number((data.origValue * data.multiplier).toFixed(value)) : Number(data.origValue.toFixed(value));
+            data.decimal = value;
+          }
+          
+        }
+      }
+      updateOption(newOption);
+    }
+ }
+
   useEffect(() => {
     const width = chartRef.current.clientWidth;
     const height = chartRef.current.clientHeight;
@@ -157,33 +219,9 @@ function Chart({option, updateOption, theChart}) {
       updateOption(newOption);
     }
 
-    // Handle percentages
-
-    let percentageFlagAdjusted = true;
-
-    for (let i = 0; i < option.series.length; ++i) {
-      for (let j = 0; j < option.series[i].data.length; ++j) {
-        if (typeof option.series[i].data[j].percentFlag === 'undefined') {
-          percentageFlagAdjusted = false;
-        } else if (option.series[i].data[j].percentFlag !== option.info.percentFlag) {
-          percentageFlagAdjusted = false;
-        }
-      }
-    }
-
-    if (!percentageFlagAdjusted) {
-      const newOption = {series: cloneDeep(option.series)};
-      for (let i = 0; i < newOption.series.length; ++i) {
-        for (let j = 0; j < newOption.series[i].data.length; ++j) {
-          const flagValue = option.info.percentFlag;
-          const curValue = newOption.series[i].data[j].percentFlag ? true : false;
-          if (flagValue && !curValue) newOption.series[i].data[j].value *= 100;
-          if (!flagValue && curValue) newOption.series[i].data[j].value /= 100;
-          newOption.series[i].data[j].percentFlag = option.info.percentFlag
-        }
-      }
-      updateOption(newOption);
-    }
+    handlePercentages();
+    handleDecimalPlaces();
+   
 
     switch (option.info.chartType) {
       case 'bar':
