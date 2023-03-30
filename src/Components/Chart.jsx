@@ -111,8 +111,6 @@ function Chart({option, updateOption, theChart}) {
     }
   }
 
-
-
   const displayGroupedBarChart = () => {
     console.log('displayGroupedBarChart');
     const chartDom = chartRef.current;
@@ -159,6 +157,33 @@ function Chart({option, updateOption, theChart}) {
       updateOption(newOption);
     }
 
+    // Handle percentages
+
+    let percentageFlagAdjusted = true;
+
+    for (let i = 0; i < option.series.length; ++i) {
+      for (let j = 0; j < option.series[i].data.length; ++j) {
+        if (typeof option.series[i].data[j].percentFlag === 'undefined') {
+          percentageFlagAdjusted = false;
+        } else if (option.series[i].data[j].percentFlag !== option.info.percentFlag) {
+          percentageFlagAdjusted = false;
+        }
+      }
+    }
+
+    if (!percentageFlagAdjusted) {
+      const newOption = {series: cloneDeep(option.series)};
+      for (let i = 0; i < newOption.series.length; ++i) {
+        for (let j = 0; j < newOption.series[i].data.length; ++j) {
+          const flagValue = option.info.percentFlag;
+          const curValue = newOption.series[i].data[j].percentFlag ? true : false;
+          if (flagValue && !curValue) newOption.series[i].data[j].value *= 100;
+          if (!flagValue && curValue) newOption.series[i].data[j].value /= 100;
+          newOption.series[i].data[j].percentFlag = option.info.percentFlag
+        }
+      }
+      updateOption(newOption);
+    }
 
     switch (option.info.chartType) {
       case 'bar':
