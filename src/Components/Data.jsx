@@ -109,7 +109,12 @@ function Data({option, updateOption}) {
             },
             tooltip: {
                 formatter: (a, b, c, d) => {
-                    return `${a.name}:<br>${a.value}`
+                    let percentFlag = a.data.percentFlag;
+                    let value = a.data.origValue ? a.data.origValue : a.value;
+                    let multiplier = a.data.multiplier ? a.data.multiplier : 1;
+                    let decimal = a.data.decimal ? a.data.decimal : 2;
+                    let displayValue = percentFlag ? `${(value * multiplier).toFixed(decimal)}%` : `${value.toFixed(decimal)}`;
+                    return `${a.name}:<br>${displayValue}`
                 },
                 backgroundColor: "rgba(0, 0, 0, .6)",
                 textStyle: {

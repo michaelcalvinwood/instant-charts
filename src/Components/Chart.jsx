@@ -189,11 +189,9 @@ function Chart({option, updateOption, theChart}) {
 
     if (!decimalAdjusted) {
       const newOption = {series: cloneDeep(option.series)};
-      console.log('handleDecimalPlaces newOption', newOption);
       for (let i = 0; i < newOption.series.length; ++i) {
         for (let j = 0; j < newOption.series[i].data.length; ++j) {
           const data = newOption.series[i].data[j];
-
           const value = option.info.decimal;
           const curValue = data.decimal ? data.decimal : null;
           if (value !== curValue) {
