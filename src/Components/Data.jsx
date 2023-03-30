@@ -533,7 +533,7 @@ function Data({option, updateOption}) {
                 { !option.info.chartType && <h3 className='Data__chart-type-header'>Chart Type</h3> }
                 <Input
                     type='select'
-                    selectKey='chartType'
+                    key='chartType'
                     selectValues={['', 'bar', 'line', 'pie', 'grouped bar']}
                     option={option}
                     updateOption={updateOption}
@@ -583,8 +583,14 @@ function Data({option, updateOption}) {
                 }
             </div>
             <div className="Data__section-right">
-                
-                
+                <Input
+                    label="Percent"
+                    type="boolean"
+                    key="percentFlag"
+                    option={option}
+                    updateOption={updateOption}
+                    optionPath='info.percentFlag'
+                />
             </div>
          </div>
          

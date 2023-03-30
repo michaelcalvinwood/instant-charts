@@ -2,7 +2,7 @@ import './Input.scss';
 import React from 'react';
 import { get, set, cloneDeep, clone } from 'lodash';
 
-function Input({type, option, optionPath, updateOption, placeholder, width, label, selectKey, selectValues}) {
+function Input({type, option, optionPath, updateOption, placeholder, width, label, key, selectValues}) {
    
     const capitalizeAllWords = sentence => {
         const words = sentence.split(" ");
@@ -39,28 +39,44 @@ function Input({type, option, optionPath, updateOption, placeholder, width, labe
                 
               )
         case 'textarea': 
-        return (
-            <div className="input__container" 
-                style={{
-                    width: width ? width : '100%'
-                }}
-            >
-                { label && <div className='input__label'>{label}</div>
-                }
-                <textarea 
-                    className="input__textarea"
-                    placeholder={placeholder ? placeholder : ''} 
-                    value={get(option, optionPath, '')}
-                    onChange={(e) => {
-                        const newValue = e.target.value;
-                        const curOption = cloneDeep(option);
-                        set(curOption, optionPath, newValue);
-                        updateOption(curOption);
+            return (
+                <div className="input__container" 
+                    style={{
+                        width: width ? width : '100%'
                     }}
-                    
-                />
-            </div>
+                >
+                    { label && <div className='input__label'>{label}</div>
+                    }
+                    <textarea 
+                        className="input__textarea"
+                        placeholder={placeholder ? placeholder : ''} 
+                        value={get(option, optionPath, '')}
+                        onChange={(e) => {
+                            const newValue = e.target.value;
+                            const curOption = cloneDeep(option);
+                            set(curOption, optionPath, newValue);
+                            updateOption(curOption);
+                        }}
+                        
+                    />
+                </div>
           )
+          case 'boolean': 
+            return (
+                <div className="input__container input__container--left" 
+                    style={{
+                        width: width ? width : '100%'
+                    }}
+                >
+                    { label && <div className='input__label'>{label}</div>
+                    }
+                    <input type="radio" id={`${key}_yes`} name={`${key}_yes`} value="yes" />
+                    <label for={`${key}_yes`}>Yes</label>
+                    <input type="radio" id={`${key}_no`} name={`${key}_no`} value="CSS" />
+                    <label for={`${key}_no`}>No</label>
+                   
+                </div>
+            )
         case 'select':
             return (
                 <div className="input__container" 
@@ -82,7 +98,7 @@ function Input({type, option, optionPath, updateOption, placeholder, width, labe
                     >
                     {
                         selectValues.map(value => {
-                            return <option key={selectKey + '-' + value} value={value}>{capitalizeAllWords(value)}</option>
+                            return <option key={key + '-' + value} value={value}>{capitalizeAllWords(value)}</option>
                         })
                     }
                     </select>
