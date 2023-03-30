@@ -18,12 +18,15 @@ function Input({type, option, optionPath, updateOption, placeholder, width, labe
     }
     switch (type) {
         case 'number':
+            console.log('option.info.decimal', option.info.decimal)
             return (
-                <div className="input__container" 
+                <div className="input__container input__container--left" 
                     style={{
                         width: width ? width : '100%'
                     }}
                 >   
+                { label && <div className='input__label'>{label}</div>
+                }
                     <input 
                         className='input__text'
                         type='number'

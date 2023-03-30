@@ -585,6 +585,16 @@ function Data({option, updateOption}) {
                 }
             </div>
             <div className="Data__section-right">
+                <Input 
+                    label="Decimal:"
+                    type="number"
+                    min={0}
+                    max={10}
+                    step={1}
+                    option={option}
+                    updateOption={updateOption}
+                    optionPath='info.decimal'
+                />
                 <Input
                     label="Percent:"
                     type="boolean"
