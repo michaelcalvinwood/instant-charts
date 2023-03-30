@@ -3,7 +3,7 @@ import React from 'react';
 import { get, set, cloneDeep, clone } from 'lodash';
 
 function Input({type, option, optionPath, updateOption, placeholder, width, label, 
-    keyVal, selectValues, defaultChecked}) {
+    keyVal, selectValues, max, min, step}) {
    
     const capitalizeAllWords = sentence => {
         const words = sentence.split(" ");
@@ -17,6 +17,30 @@ function Input({type, option, optionPath, updateOption, placeholder, width, labe
         return words.join(' ');
     }
     switch (type) {
+        case 'number':
+            return (
+                <div className="input__container" 
+                    style={{
+                        width: width ? width : '100%'
+                    }}
+                >   
+                    <input 
+                        className='input__text'
+                        type='number'
+                        max={max}
+                        min={min}
+                        step={step}
+                        value={get(option, optionPath, 0)}
+                        onChange={(e) => {
+                            const newValue = e.target.value;
+                            const curOption = cloneDeep(option);
+                            set(curOption, optionPath, newValue);
+                            updateOption(curOption);
+                        }}
+                    />  
+                </div>
+                
+              )
         case 'text':
             return (
                 <div className="input__container" 
