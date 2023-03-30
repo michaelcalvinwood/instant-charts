@@ -34,8 +34,8 @@ function App() {
       sections: [],
       chartType: '',
       chartTemplate: 'Default',
-      template: 'default',
       sectionAdjusted: false,
+      percentFlag: false
     },
     tooltip: {},
     title: [],

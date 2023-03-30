@@ -72,10 +72,12 @@ function Data({option, updateOption}) {
          */
         const legendData = [];
         const data = [];
+        let percentFlag = false;
         for (let i = 1; i < csv[0].length; ++i) {
             const name = csv[0][i];
             if (name) legendData.push(name);
-            const value = csv[1][i];
+            const value = convertValue(csv[1][i]);
+            if (csv[1][i].indexOf('%') !== -1) percentFlag = true;
             data.push({name, value, percentFlag: false});
         }
         const newOption = {};
@@ -143,7 +145,7 @@ function Data({option, updateOption}) {
           for (let j = 1; j < csv[i].length; ++j) {
             if (!csv[i][j]) continue;
             let value = convertValue(csv[i][j]);
-            data.push(value);
+            data.push({value});
           }
           newOption.series.push({
             name,
@@ -222,7 +224,7 @@ function Data({option, updateOption}) {
           for (let j = 1; j < csv[i].length; ++ j) {
             if (csv[i][j] === '') continue;
             let value = csv[i][j];
-            data.push(value);
+            data.push({value});
           }
           newOption.series.push({
             name, 
@@ -533,7 +535,7 @@ function Data({option, updateOption}) {
                 { !option.info.chartType && <h3 className='Data__chart-type-header'>Chart Type</h3> }
                 <Input
                     type='select'
-                    key='chartType'
+                    keyVal='chartType'
                     selectValues={['', 'bar', 'line', 'pie', 'grouped bar']}
                     option={option}
                     updateOption={updateOption}
@@ -584,9 +586,9 @@ function Data({option, updateOption}) {
             </div>
             <div className="Data__section-right">
                 <Input
-                    label="Percent"
+                    label="Percent:"
                     type="boolean"
-                    key="percentFlag"
+                    keyVal="percentFlag"
                     option={option}
                     updateOption={updateOption}
                     optionPath='info.percentFlag'

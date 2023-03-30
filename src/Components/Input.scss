@@ -18,4 +18,13 @@
         margin-right: .25rem;
         width: 30%;
     }
+    &__radio-label {
+
+        &--left {
+            margin: 0 .5rem 0 .25rem;
+        }
+        &--right {
+            margin-left: .25rem;
+        }
+    }
 }

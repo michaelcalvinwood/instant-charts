@@ -2,7 +2,8 @@ import './Input.scss';
 import React from 'react';
 import { get, set, cloneDeep, clone } from 'lodash';
 
-function Input({type, option, optionPath, updateOption, placeholder, width, label, key, selectValues}) {
+function Input({type, option, optionPath, updateOption, placeholder, width, label, 
+    keyVal, selectValues, defaultChecked}) {
    
     const capitalizeAllWords = sentence => {
         const words = sentence.split(" ");
@@ -70,10 +71,26 @@ function Input({type, option, optionPath, updateOption, placeholder, width, labe
                 >
                     { label && <div className='input__label'>{label}</div>
                     }
-                    <input type="radio" id={`${key}_yes`} name={`${key}_yes`} value="yes" />
-                    <label for={`${key}_yes`}>Yes</label>
-                    <input type="radio" id={`${key}_no`} name={`${key}_no`} value="CSS" />
-                    <label for={`${key}_no`}>No</label>
+                    <input type="radio" id={`${keyVal}_yes`} name={`${keyVal}`} 
+                        value="yes" className='input__radio--left'
+                        defaultChecked={get(option, optionPath)}
+                        onClick={() => {
+                            const curOption = cloneDeep(option);
+                            set(curOption, optionPath, true);
+                            updateOption(curOption);
+                        }}
+                    />
+                    <label htmlFor={`${keyVal}_yes`} className='input__radio-label--left'>Yes</label>
+                    <input type="radio" id={`${keyVal}_no`} name={`${keyVal}`} value="CSS" 
+                        className='input__radio--right'
+                        defaultChecked={!get(option, optionPath)}
+                        onClick={() => {
+                            const curOption = cloneDeep(option);
+                            set(curOption, optionPath, false);
+                            updateOption(curOption);
+                        }}    
+                    />
+                    <label htmlFor={`${keyVal}_no`} className='input__radio-label--right'>No</label>
                    
                 </div>
             )
@@ -98,7 +115,7 @@ function Input({type, option, optionPath, updateOption, placeholder, width, labe
                     >
                     {
                         selectValues.map(value => {
-                            return <option key={key + '-' + value} value={value}>{capitalizeAllWords(value)}</option>
+                            return <option key={keyVal + '-' + value} value={value}>{capitalizeAllWords(value)}</option>
                         })
                     }
                     </select>
