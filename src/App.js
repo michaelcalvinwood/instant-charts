@@ -8,6 +8,7 @@ import Chart from './Components/Chart';
 import ShowSelections from './Components/ShowSelections';
 import Title from './Components/Title';
 import SubTitle from './Components/SubTitle';
+import Colors from './Components/Colors';
 
 function App() {
   const theChart = useRef(null);
@@ -88,8 +89,9 @@ function App() {
   const [option, setOption] = useState(template);
   const optionRef = useRef(option);
   
-  const updateOption = data => {
+  const updateOption = (data, final=false) => {
     console.log('updateOption', data);
+    merge(data, {info: { sectionAdjusted: final}})
     optionRef.current = merge(optionRef.current, data);
     setOption(cloneDeep(optionRef.current));
   }
@@ -101,7 +103,9 @@ function App() {
       {selection === '' && <ShowSelections selections= {selections} setSelection={setSelection}/>}
       {selection === 'Data' && <Data option={option} updateOption={updateOption} setSelection={setSelection}/>}
       {selection === 'Title' && <Title option={option} updateOption={updateOption} setSelection={setSelection}/>}
-      {selection === 'SubTitle' && <SubTitle option={option} updateOption={updateOption} setSelection={setSelection}/>}
+      {selection === 'SubTitle' && <SubTitle option={option} updateOption={updateOption} setSelection={setSelection}/>}      
+      {selection === 'Colors' && <Colors option={option} updateOption={updateOption} setSelection={setSelection}/>}
+
       <Templates  option={option} updateOption={updateOption} theChart={theChart}/>
       <Chart option={option} updateOption={updateOption} theChart={theChart}/>
     </div>

@@ -1,6 +1,7 @@
 import './Layout.scss';
 import React from 'react';
 import closeIcon from '../assets/images/close.svg';
+import Input from './Input';
 
 function LayoutTemplate({option, updateOption, setSelection}) {
     return (
