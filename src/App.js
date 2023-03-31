@@ -96,7 +96,7 @@ function App() {
 
   return (
     <div className="App">
-      {selection === 'Data' && <Data option={option} updateOption={updateOption} />}
+      {selection === 'Data' && <Data option={option} updateOption={updateOption} setSelection={setSelection}/>}
       <Templates  option={option} updateOption={updateOption} theChart={theChart}/>
       <Chart option={option} updateOption={updateOption} theChart={theChart}/>
     </div>

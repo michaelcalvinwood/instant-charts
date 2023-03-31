@@ -4,6 +4,8 @@ import Dropzone from 'react-dropzone';
 import axios from 'axios';
 import { cloneDeep } from 'lodash';
 import Input from './Input';
+import closeIcon from '../assets/images/close.svg';
+
 /*
  * use: https://react-papaparse.js.org/
  * Write our own csv to html table
@@ -18,7 +20,7 @@ import Input from './Input';
  * 
  */
 
-function Data({option, updateOption}) {
+function Data({option, updateOption, setSelection}) {
     const capitalized = word => word.charAt(0).toUpperCase() + word.slice(1);
 
     const addTitle = (fileName, csv) => {
@@ -230,7 +232,7 @@ function Data({option, updateOption}) {
           const data = [];
           for (let j = 1; j < csv[i].length; ++ j) {
             if (csv[i][j] === '') continue;
-            let value = csv[i][j];
+            let value = convertValue(csv[i][j]);
             data.push({value});
           }
           newOption.series.push({
@@ -659,7 +661,11 @@ function Data({option, updateOption}) {
                 </div>
                 </div>
             } */}
-           
+        <img 
+            className='Data__close' 
+            src={closeIcon} 
+            onClick={() => setSelection('')}
+        />
     </div>
   )
 }
