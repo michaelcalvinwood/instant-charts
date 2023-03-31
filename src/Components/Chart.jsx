@@ -206,6 +206,23 @@ function Chart({option, updateOption, theChart}) {
     }
  }
 
+ const handleLineHeight = () => {
+  if (!option.title.length) return;
+
+  if (option.title[0].textStyle.lineHeight < option.title[0].textStyle.fontSize + 4 || option.title[0].subtextStyle.lineHeight < option.title[0].subtextStyle.fontSize + 4) {
+    const newOption = {title: cloneDeep(option.title)};
+    console.log('handleLineHeight newOption', newOption);
+
+    if (option.title[0].textStyle.lineHeight < option.title[0].textStyle.fontSize + 4) { 
+      newOption.title[0].textStyle.lineHeight = option.title[0].textStyle.fontSize + 4;
+    }
+    if (option.title[0].subtextStyle.lineHeight < option.title[0].subtextStyle.fontSize + 4) {
+      newOption.title[0].subtextStyle.lineHeight = option.title[0].subtextStyle.fontSize + 4;
+    }
+    updateOption(newOption);
+  } 
+ }
+
   useEffect(() => {
     const width = chartRef.current.clientWidth;
     const height = chartRef.current.clientHeight;
@@ -219,7 +236,7 @@ function Chart({option, updateOption, theChart}) {
 
     handlePercentages();
     handleDecimalPlaces();
-   
+    handleLineHeight();
 
     switch (option.info.chartType) {
       case 'bar':

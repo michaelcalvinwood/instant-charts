@@ -35,7 +35,7 @@ function Input({type, option, optionPath, updateOption, placeholder, width, labe
                         step={step}
                         value={get(option, optionPath, 0)}
                         onChange={(e) => {
-                            const newValue = e.target.value;
+                            const newValue = Number(e.target.value);
                             const curOption = cloneDeep(option);
                             set(curOption, optionPath, newValue);
                             updateOption(curOption);
