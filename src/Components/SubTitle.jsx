@@ -53,7 +53,15 @@ function SubTitle({option, updateOption, setSelection}) {
                     /> 
                 </div>
                 <div className="SubTitle__section-right">
- 
+                    <Input
+                        type='color'
+                        align='left'
+                        label='Font Color'
+                        
+                        option={option}
+                        updateOption={updateOption}
+                        optionPath='title[0].subtextStyle.color'
+                    /> 
 
                 </div>
              </div>

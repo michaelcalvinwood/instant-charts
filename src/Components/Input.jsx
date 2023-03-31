@@ -17,8 +17,30 @@ function Input({type, option, optionPath, updateOption, placeholder, width, labe
         return words.join(' ');
     }
     switch (type) {
+        case 'color':
+            return (
+                <div className="input__container input__container--left" 
+                    style={{
+                        width: width ? width : '100%'
+                    }}
+                >   
+                { label && <div className='input__label'>{label}</div>
+                }
+                    <input 
+                        className='input__color'
+                        type='color'
+                        value={get(option, optionPath, 0)}
+                        onChange={(e) => {
+                            const newValue = e.target.value;
+                            const curOption = cloneDeep(option);
+                            set(curOption, optionPath, newValue);
+                            updateOption(curOption);
+                        }}
+                    />  
+                </div>
+                
+              )
         case 'number':
-            
             return (
                 <div className="input__container input__container--left" 
                     style={{
