@@ -41,10 +41,20 @@ function SubTitle({option, updateOption, setSelection}) {
 
                 </div>
                 <div className="SubTitle__section-middle">
-                 
+                    <Input
+                        type='select'
+                        align='left'
+                        label='Font Weight'
+                        keyVal='subtitleFontWeigth'
+                        selectValues={['normal', 'bold', 'bolder', 'lighter']}
+                        option={option}
+                        updateOption={updateOption}
+                        optionPath='title[0].subtextStyle.fontWeight'
+                    /> 
                 </div>
                 <div className="SubTitle__section-right">
-                
+ 
+
                 </div>
              </div>
 
