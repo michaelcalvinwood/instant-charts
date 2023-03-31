@@ -124,7 +124,7 @@ function Input({type, option, optionPath, updateOption, placeholder, width, labe
             )
         case 'select':
             return (
-                <div className="input__container" 
+                <div className="input__container input__container--left" 
                     style={{
                         width: width ? width : '100%'
                     }}

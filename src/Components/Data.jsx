@@ -27,6 +27,7 @@ function Data({option, updateOption, setSelection}) {
         const name = csv[0][0] ? csv[0][0] : fileName;
         const nameParts = name.substring(0, name.lastIndexOf('.') !== -1 ? name.lastIndexOf('.') : name.length).split('--');
         let newTitle = {   
+                show: true,
                 text: nameParts[0].trim(),
                 subtext: nameParts.length > 1 ? nameParts[1].trim() : '',
                 left: 'center',
@@ -569,12 +570,12 @@ function Data({option, updateOption, setSelection}) {
             <div className="Data__section-middle">
                 { option.series.length !== 0 && <div>
                     <Input 
-                    label='Title:'
-                    type='textarea'
-                    option={option}
-                    updateOption={updateOption}
-                    optionPath='title[0].text'
-                    
+                        label='Title:'
+                        type='textarea'
+                        option={option}
+                        updateOption={updateOption}
+                        optionPath='title[0].text'
+                        
                     />
                     <Input 
                         label="Subtitle:"

@@ -40,15 +40,23 @@ function Title({option, updateOption, setSelection}) {
                     />
                 </div>
                 <div className="Title__section-middle">
-                <Input
-                    type='select'
-                    label='Font Weight'
-                    keyVal='titleFontWeigth'
-                    selectValues={['normal', 'bold', 'bolder', 'lighter']}
-                    option={option}
-                    updateOption={updateOption}
-                    optionPath='title[0].textStyle.fontWeight'
-                /> 
+                    <Input
+                        label="Show:"
+                        type="boolean"
+                        keyVal="showTitle"
+                        option={option}
+                        updateOption={updateOption}
+                        optionPath='title[0].show'
+                    />
+                    <Input
+                        type='select'
+                        label='Font Weight'
+                        keyVal='titleFontWeigth'
+                        selectValues={['normal', 'bold', 'bolder', 'lighter']}
+                        option={option}
+                        updateOption={updateOption}
+                        optionPath='title[0].textStyle.fontWeight'
+                    /> 
                  
                 </div>
                 <div className="Title__section-right">
