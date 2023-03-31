@@ -138,7 +138,7 @@ function Chart({option, updateOption, theChart}) {
         sectionBegin += option.grid[i-1].height + option.yAxis[i-1].nameTextStyle.lineHeight * 2.5;
         newOption.grid[i].top = sectionBegin;
       }
-      newOption.info.sectionAdjusted = true;
+      //newOption.info.sectionAdjusted = true;
       updateOption(newOption);
       chartDom.style.height = 3000 + 'px';
     }

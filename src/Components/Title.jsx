@@ -9,6 +9,15 @@ function Title({option, updateOption, setSelection}) {
             <h1 className='Title__heading'>Title</h1>
              <div className="Title__sections">
                 <div className="Title__section-left">
+                <Input 
+                        label='Title:'
+                        type='textarea'
+                        rows={4}
+                        option={option}
+                        updateOption={updateOption}
+                        optionPath='title[0].text'
+                        
+                    />
                 <   Input 
                         label="Font Size:"
                         type="number"

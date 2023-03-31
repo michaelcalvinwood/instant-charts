@@ -3,7 +3,7 @@ import React from 'react';
 import { get, set, cloneDeep, clone } from 'lodash';
 
 function Input({type, option, optionPath, updateOption, placeholder, width, label, 
-    keyVal, selectValues, max, min, step}) {
+    keyVal, selectValues, max, min, step, rows}) {
    
     const capitalizeAllWords = sentence => {
         const words = sentence.split(" ");
@@ -78,6 +78,7 @@ function Input({type, option, optionPath, updateOption, placeholder, width, labe
                     <textarea 
                         className="input__textarea"
                         placeholder={placeholder ? placeholder : ''} 
+                        rows={rows ? rows : 2}
                         value={get(option, optionPath, '')}
                         onChange={(e) => {
                             const newValue = e.target.value;

@@ -7,16 +7,17 @@
 
         &--left {
             justify-content: flex-start;
+            
         }
     }
     &__textarea {
-        width: 100%;
+        flex-grow: 2;
     }
     &__label {
         color: var(--primary-color);
         font-weight: 700;
         margin-right: .25rem;
-        width: 30%;
+        width: 5rem;
     }
     &__radio-label {
 
