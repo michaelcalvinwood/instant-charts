@@ -5,7 +5,7 @@ import Data from './Components/Data';
 import { merge, cloneDeep } from 'lodash';
 import Templates from './Components/Templates';
 import Chart from './Components/Chart';
-
+import ShowSelections from './Components/ShowSelections';
 
 function App() {
   const theChart = useRef(null);
@@ -97,6 +97,7 @@ function App() {
   return (
     <div className="App">
       {selection === 'Data' && <Data option={option} updateOption={updateOption} setSelection={setSelection}/>}
+      {selection === '' && <ShowSelections selections= {selections} />}
       <Templates  option={option} updateOption={updateOption} theChart={theChart}/>
       <Chart option={option} updateOption={updateOption} theChart={theChart}/>
     </div>
