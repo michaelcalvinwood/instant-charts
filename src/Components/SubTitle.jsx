@@ -9,7 +9,15 @@ function SubTitle({option, updateOption, setSelection}) {
             <h1 className='SubTitle__heading'>SubTitle</h1>
              <div className="SubTitle__sections">
                 <div className="SubTitle__section-left">
-             
+                    <Input 
+                        label='SubTitle:'
+                        type='textarea'
+                        rows={4}
+                        option={option}
+                        updateOption={updateOption}
+                        optionPath='title[0].subtext'
+                        
+                    />
                 </div>
                 <div className="SubTitle__section-middle">
                  
