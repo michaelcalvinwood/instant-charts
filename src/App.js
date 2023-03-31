@@ -11,7 +11,7 @@ function App() {
   const theChart = useRef(null);
 
   const selections = [
-    'Data'
+    'Title', 'SubTitle', 'Colors', 'Data'
   ]
   let template = {
     color: [
@@ -97,7 +97,7 @@ function App() {
   return (
     <div className="App">
       {selection === 'Data' && <Data option={option} updateOption={updateOption} setSelection={setSelection}/>}
-      {selection === '' && <ShowSelections selections= {selections} />}
+      {selection === '' && <ShowSelections selections= {selections} setSelection={setSelection}/>}
       <Templates  option={option} updateOption={updateOption} theChart={theChart}/>
       <Chart option={option} updateOption={updateOption} theChart={theChart}/>
     </div>

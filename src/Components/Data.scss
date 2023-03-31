@@ -1,6 +1,6 @@
 .Data {
     width: 100vw;
-    height: 25vh;
+    height: var(--topSectionHeight);
   
 
     &__sections {

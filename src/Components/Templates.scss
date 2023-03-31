@@ -1,5 +1,5 @@
 .templates {
-    height: 75vh;
+    height: calc(100vh - var(--topSectionHeight));
     position: fixed;
     top: 25vh;
     left: 0;
@@ -22,6 +22,7 @@
         width: 32%;
         margin-bottom: 1rem;
         text-align: center;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 
         &:hover {
             background-color: var(--secondary-color);

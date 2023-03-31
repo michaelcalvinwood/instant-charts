@@ -1,9 +1,21 @@
 import './ShowSelections.scss';
 import React from 'react';
 
-function ShowSelections() {
+function ShowSelections({selections, setSelection}) {
   return (
-    <div>ShowSelections</div>
+    <div className='showSelections'>
+        {selections.map(selection => {
+            return (
+                <div 
+                    key={selection} 
+                    className='showSelections__selection'
+                    onClick={() => setSelection(selection)}
+                >
+                        {selection}
+                </div>
+            )
+        })}
+    </div>
   )
 }
 
