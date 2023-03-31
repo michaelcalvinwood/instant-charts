@@ -18,7 +18,7 @@ function Title({option, updateOption, setSelection}) {
                         optionPath='title[0].text'
                         
                     />
-                <   Input 
+                <Input 
                         label="Font Size:"
                         type="number"
                         min={1}
@@ -27,6 +27,16 @@ function Title({option, updateOption, setSelection}) {
                         option={option}
                         updateOption={updateOption}
                         optionPath='title[0].textStyle.fontSize'
+                    />
+                <Input 
+                        label="Line Height:"
+                        type="number"
+                        min={1}
+                        max={148}
+                        step={1}
+                        option={option}
+                        updateOption={updateOption}
+                        optionPath='title[0].textStyle.lineHeight'
                     />
                 </div>
                 <div className="Title__section-middle">
