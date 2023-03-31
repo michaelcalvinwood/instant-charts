@@ -545,6 +545,7 @@ function Data({option, updateOption, setSelection}) {
                 { !option.info.chartType && <h3 className='Data__chart-type-header'>Chart Type</h3> }
                 <Input
                     type='select'
+                    align='center'
                     keyVal='chartType'
                     selectValues={['', 'bar', 'line', 'pie', 'grouped bar']}
                     option={option}

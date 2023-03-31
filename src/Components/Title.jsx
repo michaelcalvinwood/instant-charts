@@ -50,6 +50,7 @@ function Title({option, updateOption, setSelection}) {
                     />
                     <Input
                         type='select'
+                        align='left'
                         label='Font Weight'
                         keyVal='titleFontWeigth'
                         selectValues={['normal', 'bold', 'bolder', 'lighter']}

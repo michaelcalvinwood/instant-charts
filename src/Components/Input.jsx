@@ -3,7 +3,7 @@ import React from 'react';
 import { get, set, cloneDeep, clone } from 'lodash';
 
 function Input({type, option, optionPath, updateOption, placeholder, width, label, 
-    keyVal, selectValues, max, min, step, rows}) {
+    keyVal, selectValues, max, min, step, rows, align}) {
    
     const capitalizeAllWords = sentence => {
         const words = sentence.split(" ");
@@ -68,7 +68,7 @@ function Input({type, option, optionPath, updateOption, placeholder, width, labe
               )
         case 'textarea': 
             return (
-                <div className="input__container" 
+                <div className={align ? `input__container input__container--${align}` : 'input__container' }
                     style={{
                         width: width ? width : '100%'
                     }}
@@ -124,7 +124,7 @@ function Input({type, option, optionPath, updateOption, placeholder, width, labe
             )
         case 'select':
             return (
-                <div className="input__container input__container--left" 
+                <div className={align ? `input__container input__container--${align}` : 'input__container' }
                     style={{
                         width: width ? width : '100%'
                     }}
