@@ -7,6 +7,7 @@ import Templates from './Components/Templates';
 import Chart from './Components/Chart';
 import ShowSelections from './Components/ShowSelections';
 import Title from './Components/Title';
+import SubTitle from './Components/SubTitle';
 
 function App() {
   const theChart = useRef(null);
@@ -100,6 +101,7 @@ function App() {
       {selection === '' && <ShowSelections selections= {selections} setSelection={setSelection}/>}
       {selection === 'Data' && <Data option={option} updateOption={updateOption} setSelection={setSelection}/>}
       {selection === 'Title' && <Title option={option} updateOption={updateOption} setSelection={setSelection}/>}
+      {selection === 'SubTitle' && <SubTitle option={option} updateOption={updateOption} setSelection={setSelection}/>}
       <Templates  option={option} updateOption={updateOption} theChart={theChart}/>
       <Chart option={option} updateOption={updateOption} theChart={theChart}/>
     </div>

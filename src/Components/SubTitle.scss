@@ -1,0 +1,31 @@
+.SubTitle {
+    width: 100vw;
+    height: var(--topSectionHeight);
+  
+    &__sections {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__section-left, &__section-middle, &__section-right {
+        width: 33vw;
+        padding: 1rem;
+        overflow-y: auto;
+        height: calc(25vh - 46px);
+    }
+    &__section-middle {
+        border-left: 1px solid var(--primary-color);
+        border-right: 1px solid var(--primary-color);
+        
+    }
+  
+    &__close {
+        z-index: 100;
+        height: 1.5rem;
+        width: 1.5rem;
+        position: fixed;
+        top: .5rem;
+        right: .5rem;
+        cursor: pointer;
+        filter: var(--primary-color-filter);
+    }
+}
