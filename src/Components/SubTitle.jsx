@@ -18,6 +18,17 @@ function SubTitle({option, updateOption, setSelection}) {
                         optionPath='title[0].subtext'
                         
                     />
+                                    
+                    <Input 
+                        label="Font Size:"
+                        type="number"
+                        min={1}
+                        max={124}
+                        step={1}
+                        option={option}
+                        updateOption={updateOption}
+                        optionPath='title[0].subtextStyle.fontSize'
+                    />
                 </div>
                 <div className="SubTitle__section-middle">
                  
