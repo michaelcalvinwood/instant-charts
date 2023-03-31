@@ -18,7 +18,7 @@ function Input({type, option, optionPath, updateOption, placeholder, width, labe
     }
     switch (type) {
         case 'number':
-            console.log('option.info.decimal', option.info.decimal)
+            
             return (
                 <div className="input__container input__container--left" 
                     style={{
